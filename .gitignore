@@ -53,3 +53,7 @@ Thumbs.db
 
 # Downloaded speech recognition models
 models/
+
+history.txt
+
+data/sessions

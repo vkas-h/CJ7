@@ -1,8 +1,15 @@
 from core.command import Command
 
 from services.file_manager import (
-    create_file, create_folder, delete_path, edit_file, list_directory,
-    open_file, read_file, search_files,
+    create_file,
+    create_folder,
+    delete_path,
+    edit_file,
+    list_directory,
+    open_file,
+    read_file,
+    search_files,
+    search_file_contents,
 )
 
 
@@ -42,6 +49,12 @@ def edit_file_command(path, old_text, new_text, expected_hash):
 
 def delete_command(path):
     return delete_path(path)
+
+
+def search_content_command(query, path=None):
+    results = search_file_contents(query, path=path)
+    return "\n".join(results)
+
 
 
 COMMANDS = [
@@ -148,4 +161,34 @@ COMMANDS = [
             "additionalProperties": False,
         },
     ),
+
+    Command(
+        name="search_content",
+        function=search_content_command,
+        description=(
+            "Search inside text files for a phrase or code symbol. "
+            "Returns matching file paths, line numbers, and matching lines. "
+            "Use this to find where a function, variable, or phrase appears "
+            "across a project. Optionally restrict the search to a file "
+            "or directory."
+        ),
+        parameters={
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Text or code symbol to find inside files."
+                },
+                "path": {
+                    "type": ["string", "null"],
+                    "description": (
+                        "Optional file or directory to search. "
+                        "If omitted, search configured directories."
+                    )
+                }
+            },
+            "required": ["query"],
+            "additionalProperties": False,
+        },
+    )
 ]

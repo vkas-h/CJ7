@@ -81,6 +81,157 @@ def search_files(query):
     return results
 
 
+def search_file_contents(query, path=None):
+    """
+    Search file contents using ripgrep when available.
+    Falls back to a bounded UTF-8 text scan.
+    Returns matching lines with file paths and line numbers.
+    """
+    needle = query.strip()
+    if not needle:
+        return ["Search query cannot be empty."]
+
+    if path:
+        target = _resolve(path)
+
+        if _is_blocked(target):
+            return [f"Blocked: Cannot search a protected path: {target}"]
+
+        if not target.exists():
+            return [f"Path not found: {target}"]
+
+        roots = [target]
+    else:
+        roots = [root for root in SEARCH_PATHS if root.exists()]
+
+    if not roots:
+        return ["No valid search paths are configured."]
+
+    limit = MAX_RESULTS
+    max_file_bytes = 2_000_000
+    matches = []
+
+    # Prefer ripgrep when installed.
+    rg = shutil.which("rg")
+
+    if rg:
+        command = [
+            rg,
+            "--line-number",
+            "--with-filename",
+            "--no-heading",
+            "--color", "never",
+            "--fixed-strings",
+            "--ignore-case",
+            "--max-filesize", f"{max_file_bytes}",
+        ]
+
+        for ignored in IGNORE:
+            command.extend(["--glob", f"!**/{ignored}/**"])
+            command.extend(["--glob", f"!**/{ignored}"])
+
+        command.extend(["--", needle])
+        command.extend(str(root) for root in roots)
+
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=30,
+                check=False,
+            )
+
+            if result.returncode in (0, 1):
+                matches = result.stdout.splitlines()[:limit]
+
+                if matches:
+                    return [
+                        f"Content search for '{needle}': "
+                        f"{len(matches)} match(es)"
+                    ] + matches
+
+                return [f"No content matches found for '{needle}'."]
+
+            # If ripgrep fails, try the Python fallback below.
+
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+
+    # Python fallback: scan readable text files.
+    for root in roots:
+        if root.is_file():
+            candidates = [root]
+        elif root.is_dir():
+            candidates = []
+
+            for current, dirs, files in os.walk(
+                root, topdown=True, followlinks=False
+            ):
+                current_path = Path(current)
+
+                dirs[:] = [
+                    name for name in dirs
+                    if not _is_ignored(current_path / name)
+                    and not (current_path / name).is_symlink()
+                ]
+
+                for name in files:
+                    candidate = current_path / name
+
+                    if not _is_ignored(candidate):
+                        candidates.append(candidate)
+        else:
+            continue
+
+        for candidate in candidates:
+            if _is_ignored(candidate) or _is_blocked(candidate):
+                continue
+
+            try:
+                if not candidate.is_file():
+                    continue
+
+                if candidate.stat().st_size > max_file_bytes:
+                    continue
+
+                with candidate.open(
+                    "r", encoding="utf-8", errors="strict"
+                ) as handle:
+                    for line_number, line in enumerate(handle, 1):
+                        if needle.casefold() in line.casefold():
+                            snippet = line.rstrip()[:500]
+
+                            matches.append(
+                                f"{candidate}:{line_number}: {snippet}"
+                            )
+
+                            if len(matches) >= limit:
+                                return [
+                                    f"Content search for '{needle}': "
+                                    f"at least {len(matches)} match(es) "
+                                    f"(result limit reached)"
+                                ] + matches
+
+            except (
+                OSError,
+                UnicodeDecodeError,
+                PermissionError,
+            ):
+                # Skip inaccessible files and files that are not UTF-8 text.
+                continue
+
+    if not matches:
+        return [f"No content matches found for '{needle}'."]
+
+    return [
+        f"Content search for '{needle}': {len(matches)} match(es)"
+    ] + matches
+
+
+
 def open_file(path):
     try:
         target = _resolve(path)
