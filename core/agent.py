@@ -10,6 +10,8 @@ from core.reasoning import ReasoningRouter , ReasoningLevel
 # from ollama import chat
 from services.tts import speak
 
+MAX_TOOL_RESULT_CHARS = 8000
+
 
 
 class Agent:
@@ -112,7 +114,22 @@ class Agent:
             status = "SUCCESS" if result.success else "FAILED"
             print(f"[HOOK] Tool {tool_name}: {status}")
     
+    def limit_result_text(self, text):
+        if not isinstance(text, str):
+            return text
 
+        if len(text) <= MAX_TOOL_RESULT_CHARS:
+            return text
+
+        omitted = len(text) - MAX_TOOL_RESULT_CHARS
+
+        return (
+            text[:MAX_TOOL_RESULT_CHARS]
+            + f"\n\n[OUTPUT TRUNCATED: {omitted} characters omitted]"
+        )
+
+
+    
     def execute_tool(self, tool_call):
 
         tool_name = tool_call.function.name
@@ -157,7 +174,11 @@ class Agent:
 
         result = dispatch(action, self.commands)
 
-        # Hook 2: run after dispatch returns.
+        # Limit returned text before sending it to the model.
+        result.output = self.limit_result_text(result.output)
+        result.error = self.limit_result_text(result.error)
+
+        # Hook 2: run after dispatch and output processing.
         self.after_tool_execution(tool_name, result)
 
         return result.to_dict()
