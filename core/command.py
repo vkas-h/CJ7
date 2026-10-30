@@ -10,9 +10,7 @@ class Command:
     aliases: list[str] = field(default_factory=list)
     enabled: bool = True
     parameters: dict = field(default_factory=dict)
+    toolset: str = "core"
 
-    # Permission level for AI execution.
-    # safe       = execute automatically
-    # confirm    = ask the user first
-    # dangerous  = never allow AI to execute directly
+    # safe: automatic; confirm: user approval; dangerous: block AI execution
     permission: str = "safe"
