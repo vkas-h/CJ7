@@ -5,7 +5,6 @@ from utils.plugin_loader import load_plugins
 from core.scheduler import scheduler
 from services import app_manager
 # from threading import Thread
-from services.indexer import initialize_indexer, shutdown_indexer
 # from pathlib import Path
 from config.settings import show_banner
 from core.action import Action
@@ -29,7 +28,6 @@ commands = load_plugins()
 scheduler.initialize()
 app_manager.initialize()
 # SEARCH_PATHS = [Path.home(), Path("D:/")]
-observer = initialize_indexer()
 session_manager.create()
 
 #---------------exit and help command --------------------
@@ -45,7 +43,6 @@ event_bus.subscribe("action_failed", log_event)
 
 
 def exit_program():
-    shutdown_indexer()
     print("Goodbye master ")
     sys.exit()
 
