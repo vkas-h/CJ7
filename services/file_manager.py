@@ -7,7 +7,7 @@ import sys
 import tempfile
 from datetime import datetime
 from pathlib import Path
-
+import time
 from send2trash import send2trash
 from config.settings import config
 
@@ -30,8 +30,11 @@ def _is_blocked(path):
 
 
 def _is_ignored(path):
-    value = str(path).casefold()
-    return any(token in value for token in IGNORE)
+
+    return any(
+        part.casefold() in IGNORE
+        for part in Path(path).parts
+    )
 
 
 def _hash(text):
@@ -49,50 +52,88 @@ def _read_text(path):
 
 
 def search_files(query):
-    """Search configured roots live for filename/folder-name matches."""
+    """Search configured roots for filename and folder-name matches."""
     needle = query.strip().casefold()
+
     if not needle:
         return []
-    results, seen = [], set()
+
+    results = []
+    seen = set()
+
     for root in SEARCH_PATHS:
-        if not root.is_dir():
-            continue
         try:
-            for current, dirs, files in os.walk(root, topdown=True, followlinks=False):
-                here = Path(current)
-                dirs[:] = [d for d in dirs if not _is_ignored(here / d) and not (here / d).is_symlink()]
+            root = root.resolve()
+
+            if not root.is_dir() or _is_blocked(root):
+                continue
+
+            for current, dirs, files in os.walk(
+                root,
+                topdown=True,
+                followlinks=False,
+            ):
+                here = Path(current).resolve()
+
+                # Do not traverse a protected directory.
+                if _is_blocked(here):
+                    dirs[:] = []
+                    continue
+
+                dirs[:] = [
+                    name
+                    for name in dirs
+                    if not _is_ignored(name)
+                    and not (here / name).is_symlink()
+                    and not _is_blocked(here / name)
+                ]
+
                 for name in [*dirs, *files]:
                     candidate = here / name
-                    if needle not in name.casefold() or _is_ignored(candidate):
+
+                    if needle not in name.casefold():
                         continue
+
+                    if _is_ignored(name) or _is_blocked(candidate):
+                        continue
+
                     try:
                         resolved = candidate.resolve()
+
+                        if _is_blocked(resolved):
+                            continue
+
                         key = str(resolved).casefold()
+
                         if key in seen:
                             continue
+
                         seen.add(key)
                         results.append(resolved)
+
                         if len(results) >= MAX_RESULTS:
                             return results
-                    except OSError:
+
+                    except (OSError, ValueError, RuntimeError):
                         continue
-        except OSError:
+
+        except (OSError, ValueError, RuntimeError):
             continue
+
     return results
 
-
 def search_file_contents(query, path=None):
-    """
-    Search file contents using ripgrep when available.
-    Falls back to a bounded UTF-8 text scan.
-    Returns matching lines with file paths and line numbers.
-    """
+
     needle = query.strip()
+
     if not needle:
         return ["Search query cannot be empty."]
 
-    if path:
-        target = _resolve(path)
+    if path is not None:
+        try:
+            target = _resolve(path)
+        except (OSError, ValueError, RuntimeError) as exc:
+            return [f"Invalid search path: {exc}"]
 
         if _is_blocked(target):
             return [f"Blocked: Cannot search a protected path: {target}"]
@@ -101,152 +142,201 @@ def search_file_contents(query, path=None):
             return [f"Path not found: {target}"]
 
         roots = [target]
+
     else:
-        roots = [root for root in SEARCH_PATHS if root.exists()]
+        roots = []
+
+        for configured_root in SEARCH_PATHS:
+            try:
+                root = configured_root.resolve()
+
+                if root.exists() and not _is_blocked(root):
+                    roots.append(root)
+
+            except (OSError, ValueError, RuntimeError):
+                continue
 
     if not roots:
         return ["No valid search paths are configured."]
 
     limit = MAX_RESULTS
     max_file_bytes = 2_000_000
+    max_files_scanned = 50_000
+    deadline = time.monotonic() + 30
+
     matches = []
+    files_scanned = 0
 
-    # Prefer ripgrep when installed.
-    rg = shutil.which("rg")
-
-    if rg:
-        command = [
-            rg,
-            "--line-number",
-            "--with-filename",
-            "--no-heading",
-            "--color", "never",
-            "--fixed-strings",
-            "--ignore-case",
-            "--max-filesize", f"{max_file_bytes}",
-        ]
-
-        for ignored in IGNORE:
-            command.extend(["--glob", f"!**/{ignored}/**"])
-            command.extend(["--glob", f"!**/{ignored}"])
-
-        command.extend(["--", needle])
-        command.extend(str(root) for root in roots)
+    for root in roots:
+        if time.monotonic() >= deadline:
+            break
 
         try:
-            result = subprocess.run(
-                command,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                timeout=30,
-                check=False,
-            )
+            if _is_blocked(root):
+                continue
 
-            if result.returncode in (0, 1):
-                matches = result.stdout.splitlines()[:limit]
+            if root.is_symlink():
+                continue
 
-                if matches:
-                    return [
-                        f"Content search for '{needle}': "
-                        f"{len(matches)} match(es)"
-                    ] + matches
+            if root.is_file():
+                candidates = [root]
 
-                return [f"No content matches found for '{needle}'."]
+            elif root.is_dir():
+                candidates = []
 
-            # If ripgrep fails, try the Python fallback below.
+                for current, dirs, files in os.walk(
+                    root,
+                    topdown=True,
+                    followlinks=False,
+                ):
+                    if time.monotonic() >= deadline:
+                        break
 
-        except (OSError, subprocess.TimeoutExpired):
-            pass
+                    current_path = Path(current)
 
-    # Python fallback: scan readable text files.
-    for root in roots:
-        if root.is_file():
-            candidates = [root]
-        elif root.is_dir():
-            candidates = []
+                    if _is_blocked(current_path):
+                        dirs[:] = []
+                        continue
 
-            for current, dirs, files in os.walk(
-                root, topdown=True, followlinks=False
-            ):
-                current_path = Path(current)
+                    dirs[:] = [
+                        name
+                        for name in dirs
+                        if not _is_ignored(name)
+                        and not (current_path / name).is_symlink()
+                        and not _is_blocked(current_path / name)
+                    ]
 
-                dirs[:] = [
-                    name for name in dirs
-                    if not _is_ignored(current_path / name)
-                    and not (current_path / name).is_symlink()
-                ]
+                    for name in files:
+                        candidate = current_path / name
 
-                for name in files:
-                    candidate = current_path / name
+                        if _is_ignored(name):
+                            continue
 
-                    if not _is_ignored(candidate):
+                        if candidate.is_symlink():
+                            continue
+
+                        if _is_blocked(candidate):
+                            continue
+
                         candidates.append(candidate)
-        else:
+
+                        if len(candidates) >= max_files_scanned:
+                            break
+
+                    if len(candidates) >= max_files_scanned:
+                        break
+
+            else:
+                continue
+
+        except (OSError, ValueError, RuntimeError):
             continue
 
         for candidate in candidates:
-            if _is_ignored(candidate) or _is_blocked(candidate):
-                continue
+            if time.monotonic() >= deadline:
+                break
+
+            if files_scanned >= max_files_scanned:
+                break
 
             try:
-                if not candidate.is_file():
+                # Resolve again before opening the file.
+                resolved = candidate.resolve()
+
+                if _is_blocked(resolved):
                     continue
 
-                if candidate.stat().st_size > max_file_bytes:
+                if _is_ignored(resolved) or resolved.is_symlink():
                     continue
 
-                with candidate.open(
-                    "r", encoding="utf-8", errors="strict"
+                if not resolved.is_file():
+                    continue
+
+                if resolved.stat().st_size > max_file_bytes:
+                    continue
+
+                files_scanned += 1
+
+                with resolved.open(
+                    "r",
+                    encoding="utf-8",
+                    errors="strict",
                 ) as handle:
                     for line_number, line in enumerate(handle, 1):
+                        if time.monotonic() >= deadline:
+                            break
+
                         if needle.casefold() in line.casefold():
                             snippet = line.rstrip()[:500]
 
                             matches.append(
-                                f"{candidate}:{line_number}: {snippet}"
+                                f"{resolved}:{line_number}: {snippet}"
                             )
 
                             if len(matches) >= limit:
                                 return [
                                     f"Content search for '{needle}': "
-                                    f"at least {len(matches)} match(es) "
-                                    f"(result limit reached)"
+                                    f"{len(matches)} result(s); "
+                                    "result limit reached."
                                 ] + matches
 
             except (
                 OSError,
                 UnicodeDecodeError,
-                PermissionError,
+                ValueError,
+                RuntimeError,
             ):
-                # Skip inaccessible files and files that are not UTF-8 text.
                 continue
 
-    if not matches:
-        return [f"No content matches found for '{needle}'."]
+        if files_scanned >= max_files_scanned:
+            break
+
+    if matches:
+        summary = (
+            f"Content search for '{needle}': "
+            f"{len(matches)} result(s)."
+        )
+        return [summary] + matches
+
+    if time.monotonic() >= deadline:
+        return [
+            f"Search timed out after 30 seconds. "
+            f"Scanned {files_scanned} file(s); "
+            "try a narrower directory."
+        ]
+
+    if files_scanned >= max_files_scanned:
+        return [
+            f"Search reached the {max_files_scanned:,}-file scan limit "
+            "without finding matches. Try a narrower directory."
+        ]
 
     return [
-        f"Content search for '{needle}': {len(matches)} match(es)"
-    ] + matches
-
-
+        f"No content matches found for '{needle}'. "
+        f"Scanned {files_scanned} file(s)."
+    ]
 
 def open_file(path):
     try:
         target = _resolve(path)
+
+        if _is_blocked(target):
+            return f"Blocked: Cannot open a protected path: {target}"
+
         if not target.exists():
-            return f"File not found: {target}"
+            return f"Path not found: {target}"
+
         if os.name == "nt":
             os.startfile(str(target))
         elif sys.platform == "darwin":
             subprocess.Popen(["open", str(target)])
         else:
             subprocess.Popen(["xdg-open", str(target)])
-        return f"Opened: {target}"
-    except (OSError, ValueError) as exc:
-        return f"Failed to open '{path}': {exc}"
 
+        return f"Opened: {target}"
+
+    except (OSError, ValueError, RuntimeError) as exc:
+        return f"Failed to open '{path}': {exc}"
 
 def read_file(path, start_line=None, end_line=None):
     try:
