@@ -1,0 +1,27 @@
+{
+    "data_dir": "data",
+    "search_paths": ["~"],
+    "blocked_paths":[
+        "C:/Windows",
+        "C:/Program Files",
+        "C:/Program Files (x86)"
+    ],
+    "ignore":[
+        "temp",
+        "cache",
+        "appdata",
+        ".git",
+        "node_modules",
+        "__pycache__"
+    ],
+    "max_result":20,
+    "app_registry": "data/apps.json",
+    "history_file": "data/history.txt",
+    "notes_file": "data/notes.txt",
+    "jobs_file": "data/jobs.json",
+    "index_file": "data/file_index.json",
+    "log_file":"data/cj7.log",
+    "session_folder" : "data/sessions"
+
+}
+

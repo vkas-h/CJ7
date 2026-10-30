@@ -1,0 +1,45 @@
+{
+    "id": "b922b747-f5a6-4eec-9b88-4be51bbb8b33",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-17T02:20:09.267195",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?",
+            "timestamp": "2026-09-17T02:20:52.659362",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "what time is it",
+            "timestamp": "2026-09-17T02:21:21.143449",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "The current time is 02:21 AM.",
+            "timestamp": "2026-09-17T02:21:27.179619",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "this is a python project  cj7 you ... can you tell me how i can give you the ability so you can do websearch",
+            "timestamp": "2026-09-17T02:21:58.864062",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I cannot directly access or modify your Python code (like `requirements.txt` or custom API keys) from here in this environment to make myself capable of doing a live web search like `google.com`. I am currently confined to the file system and internal commands you have provided.\n\nHowever, based on how I operate in this environment, if you need me to fetch information that isn't already stored in files or notes:\n1.  **Use existing tools:** There is an `open` command to launch installed applications (like a web browser). If you launch one, you can do the search yourself.\n2.  **Files as data:** If I know of a website URL and it is publicly available, I might be able to access it via its path if it were stored locally, but generally, my knowledge base is limited to what is saved in the files on your system or what you tell me directly.\n\nIs there something specific you are trying to find online right now? If so, perhaps I can help you locate that information through the files on your computer instead?",
+            "timestamp": "2026-09-17T02:23:20.175544",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-17T02:20:02.323048",
+    "owner": "local"
+}

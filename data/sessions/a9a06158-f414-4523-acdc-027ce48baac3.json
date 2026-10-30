@@ -1,0 +1,21 @@
+{
+    "id": "a9a06158-f414-4523-acdc-027ce48baac3",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hey",
+            "timestamp": "2026-09-06T04:25:23.299595",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?",
+            "timestamp": "2026-09-06T04:25:33.691509",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-06T04:25:10.632363",
+    "owner": "local"
+}

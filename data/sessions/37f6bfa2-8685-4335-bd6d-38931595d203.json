@@ -1,0 +1,69 @@
+{
+    "id": "37f6bfa2-8685-4335-bd6d-38931595d203",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "Hey C-J-seven",
+            "timestamp": "2026-09-17T15:54:05.714889",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hey there! How can I help you today?",
+            "timestamp": "2026-09-17T15:54:19.517690",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hello CJ",
+            "timestamp": "2026-09-17T15:54:50.993159",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I assist you today?",
+            "timestamp": "2026-09-17T15:54:54.822520",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Bro, what's the time now?",
+            "timestamp": "2026-09-17T15:54:59.645970",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "It's 3:55 PM.",
+            "timestamp": "2026-09-17T15:55:07.314040",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hmm, good.",
+            "timestamp": "2026-09-17T15:55:11.603915",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Yeah, it's pretty late\u2014maybe you should head to bed soon. \ud83d\ude34",
+            "timestamp": "2026-09-17T15:55:19.926388",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Let's not play it. It's just in the data and grow",
+            "timestamp": "2026-09-17T15:55:27.315567",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Haha, I think I'm just data, bro. \ud83e\udd16\n\nWhat's on your mind? You want to work on something, or just chatting?",
+            "timestamp": "2026-09-17T15:55:44.811162",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-17T15:53:57.691689",
+    "owner": "local"
+}

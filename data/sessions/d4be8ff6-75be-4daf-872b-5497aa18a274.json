@@ -1,0 +1,45 @@
+{
+    "id": "d4be8ff6-75be-4daf-872b-5497aa18a274",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-17T15:37:46.647240",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hi there! How can I help you today?",
+            "timestamp": "2026-09-17T15:38:00.074671",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-17T15:38:05.859141",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I assist you today?",
+            "timestamp": "2026-09-17T15:38:09.723401",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hey C-J-seven",
+            "timestamp": "2026-09-17T15:39:19.733470",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hey! How can I help you out?",
+            "timestamp": "2026-09-17T15:39:23.143815",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-17T15:37:23.352617",
+    "owner": "local"
+}

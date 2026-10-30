@@ -1,0 +1,57 @@
+{
+    "id": "341f9839-f4ff-4dd8-9c6a-6264370a47fc",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hi can you inroduce yourself and call my name bikash ",
+            "timestamp": "2026-09-08T23:38:39.619972",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Namaskar Bikash! I am CJ7, your desktop AI assistant. How may I help you today?",
+            "timestamp": "2026-09-08T23:38:50.363516",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "thats greate",
+            "timestamp": "2026-09-08T23:38:57.165049",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I'm glad to hear that! \ud83d\ude0a Is there anything specific you'd like help with today, Bikash?",
+            "timestamp": "2026-09-08T23:39:11.948149",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "youre not pronouncing my name well its inidan name bi bi cah",
+            "timestamp": "2026-09-08T23:39:35.784435",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "You're absolutely right! Apologies, Bikash. It's actually pronounced \"Bi-bi-cah.\" Thank you for correcting me\u2014glad I could make it better this time! \ud83d\ude0a How can I help you today?",
+            "timestamp": "2026-09-08T23:39:56.634149",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "nah its like BI ka SA but js no space or stop between them",
+            "timestamp": "2026-09-08T23:40:19.481446",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "You're right! My apologies again, Bikash. It's \"Bi-Ka-SA\" - Bi-kah-sa. Thank you for keeping me honest with the correct pronunciation! \ud83d\ude0a How can I help you today?",
+            "timestamp": "2026-09-08T23:40:42.544042",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-08T23:38:25.660294",
+    "owner": "local"
+}

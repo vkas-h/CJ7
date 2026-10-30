@@ -1,0 +1,45 @@
+{
+    "id": "45ba3370-fc9b-415b-8eef-e3e7ceb5ad57",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "Hey C-J-seven",
+            "timestamp": "2026-09-15T14:19:53.265350",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?",
+            "timestamp": "2026-09-15T14:20:14.850694",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "What time is it?",
+            "timestamp": "2026-09-15T14:20:23.820112",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "The current time is 02:20 PM. Is there something specific you'd like to do?",
+            "timestamp": "2026-09-15T14:20:34.876182",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hmm",
+            "timestamp": "2026-09-15T14:20:41.424032",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I'm here and ready to help! Is there something specific you'd like to work on today, or do you have any tasks in mind?",
+            "timestamp": "2026-09-15T14:21:00.323069",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-15T14:19:25.144958",
+    "owner": "local"
+}

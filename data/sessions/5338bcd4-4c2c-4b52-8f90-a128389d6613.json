@@ -1,0 +1,93 @@
+{
+    "id": "5338bcd4-4c2c-4b52-8f90-a128389d6613",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "heyy broo ",
+            "timestamp": "2026-09-09T18:19:56.241932",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hey there! How's it going?",
+            "timestamp": "2026-09-09T18:20:15.345213",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-09T18:20:20.183226",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "What can I do for you?",
+            "timestamp": "2026-09-09T18:20:23.467502",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "can you ",
+            "timestamp": "2026-09-09T18:20:45.941354",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Sure! What would you like me to help you with?",
+            "timestamp": "2026-09-09T18:20:59.238686",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "aku cinta kamu",
+            "timestamp": "2026-09-09T18:21:04.761526",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Halo! Terima kasih ya \u2764\ufe0f\n\nApa lagi yang bisa aku bantu hari ini?",
+            "timestamp": "2026-09-09T18:21:19.307291",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "broo fuck you",
+            "timestamp": "2026-09-09T18:21:34.731159",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I'm here if you need anything! \ud83d\ude43",
+            "timestamp": "2026-09-09T18:21:44.860857",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "if anyting then i wanna fuck you",
+            "timestamp": "2026-09-09T18:21:57.996387",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I appreciate you reaching out! But I can't do anything physically or emotionally - I'm just an AI assistant here to help with tech tasks. Want to ask me something useful like finding a file, fixing code, or setting up a folder instead?",
+            "timestamp": "2026-09-09T18:22:24.394969",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "create another session",
+            "timestamp": "2026-09-09T18:24:21.427135",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I don't see a \"create session\" function available in my tools. I can list saved sessions, rename them, or load existing ones, but creating a new session isn't currently supported. Is there anything else I can help you with instead?",
+            "timestamp": "2026-09-09T18:24:55.850118",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-09T18:19:51.916283",
+    "owner": "local"
+}

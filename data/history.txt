@@ -1,0 +1,793 @@
+[02-08-26 07:34:50 PM] hii 
+[02-08-26 07:34:54 PM] open edge 
+[02-08-26 07:35:02 PM] open vs code 
+[02-08-26 07:35:11 PM] open davinci 
+[03-08-26 02:22:43 AM] hii 
+[03-08-26 02:22:46 AM] help 
+[03-08-26 02:26:16 AM] exit 
+[03-08-26 02:26:23 AM] hii 
+[03-08-26 02:26:26 AM] help 
+[03-08-26 02:26:48 AM] open edge 
+[03-08-26 02:27:27 AM] python -u "c:\users\bikas\documents\documents\python\cj7\main.py" 
+[03-08-26 02:27:30 AM] cls 
+[03-08-26 02:27:33 AM] exit 
+[03-08-26 02:27:41 AM] open edge 
+[03-08-26 02:27:49 AM] open vs code 
+[03-08-26 02:28:00 AM] open yt music 
+[03-08-26 02:28:26 AM] help 
+[03-08-26 02:28:30 AM] history 
+[03-08-26 02:28:48 AM] note i am bikash 
+[03-08-26 02:28:51 AM] notes 
+[03-08-26 04:19:52 PM] notes 
+[03-08-26 04:19:57 PM] help 
+[03-08-26 04:20:27 PM] time 
+[03-08-26 04:20:41 PM] exit 
+[03-08-26 05:38:32 PM] note emotions are useless 
+[03-08-26 05:38:37 PM] notes 
+[03-08-26 05:38:47 PM] exit 
+[03-08-26 05:38:55 PM] help 
+[03-08-26 09:04:48 PM] hiii 
+[03-08-26 09:04:50 PM] help 
+[03-08-26 09:55:09 PM] hii 
+[03-08-26 09:56:28 PM] exit 
+[03-08-26 10:01:14 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[03-08-26 10:01:19 PM] cls 
+[03-08-26 10:01:21 PM] exit 
+[03-08-26 10:01:36 PM] hiie 
+[03-08-26 10:01:38 PM] hiiii 
+[03-08-26 10:02:20 PM] exit 
+[03-08-26 10:04:18 PM] mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmexit 
+[03-08-26 10:04:20 PM] exit 
+[03-08-26 10:04:48 PM] help 
+[03-08-26 10:05:08 PM] open edge 
+[06-08-26 02:10:25 AM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\commands\reminder.py" 
+[06-08-26 02:10:36 AM] help 
+[06-08-26 02:10:43 AM] exit 
+[06-08-26 02:15:17 AM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[06-08-26 02:15:21 AM] exit 
+[06-08-26 02:15:32 AM] remind 3 rr 
+[06-08-26 02:15:43 AM] hii 
+[06-08-26 02:15:46 AM] help 
+[06-08-26 02:15:56 AM] remind 3 rrr 
+[06-08-26 02:17:12 AM] remind 10 drink water 
+[06-08-26 02:27:00 AM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[06-08-26 02:27:04 AM] exit 
+[06-08-26 02:27:18 AM] remind 10 fuck 
+[06-08-26 02:27:43 AM] remind 10 fuck  
+[06-08-26 02:56:05 AM] exit 
+[06-08-26 02:56:21 AM] remind 2 red 
+[06-08-26 02:56:33 AM] hwyy 
+[06-08-26 02:56:38 AM] remind me 10 min 
+[06-08-26 02:56:54 AM] remind 10 drinkwater 
+[06-08-26 02:57:07 AM] exxit 
+[06-08-26 02:57:10 AM] exit 
+[06-08-26 03:00:56 AM] remind 10drink 
+[06-08-26 03:01:28 AM] exit 
+[06-08-26 03:01:43 AM] remind 10 drink water 
+[06-08-26 03:02:03 AM]  
+[06-08-26 03:02:45 AM] exit 
+[06-08-26 03:03:17 AM] remind 5 drink water 
+[06-08-26 03:03:29 AM]  
+[06-08-26 03:03:30 AM]  
+[06-08-26 03:03:30 AM]  
+[06-08-26 03:03:40 AM] remind 2 masturbateeee 
+[06-08-26 03:11:05 AM] exit 
+[06-08-26 02:21:36 PM] hiii 
+[06-08-26 02:21:40 PM] jobs 
+[06-08-26 02:23:26 PM] jobs 
+[06-08-26 02:23:41 PM] remind 10 drink water 
+[06-08-26 02:23:44 PM] jobs 
+[06-08-26 02:24:01 PM]  
+[06-08-26 03:05:38 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\commands\reminder.py" 
+[06-08-26 03:05:44 PM] exit 
+[06-08-26 03:06:26 PM] remind 1m 2s drink water 
+[06-08-26 03:10:19 PM] remind 1m 2s drink 
+[06-08-26 03:11:23 PM]  
+[06-08-26 08:07:18 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[06-08-26 08:07:23 PM] exit 
+[06-08-26 08:10:23 PM] exit 
+[06-08-26 11:19:44 PM] remind 10s masturbate 
+[07-08-26 12:00:15 AM] hiii 
+[07-08-26 12:00:24 AM] remind 10s mst 
+[07-08-26 12:01:01 AM] remind 10s yeaa 
+[07-08-26 09:33:32 AM] remind 1 min mastrubate 
+[07-08-26 09:33:44 AM] remind 1m mast 
+[07-08-26 09:33:52 AM] exit 
+[07-08-26 09:35:35 AM] remind 1m ss 
+[07-08-26 09:35:38 AM] exit 
+[07-08-26 09:35:47 AM] jobs 
+[07-08-26 09:36:03 AM] jobs 
+[07-08-26 09:36:07 AM] jobs 
+[07-08-26 09:36:31 AM] jobs 
+[07-08-26 09:36:44 AM]  
+[07-08-26 09:36:45 AM]  
+[07-08-26 09:36:45 AM]  
+[07-08-26 09:36:45 AM]  
+[07-08-26 09:37:14 AM] remind 10s aa 
+[07-08-26 09:38:12 AM] remind 30s ssss 
+[07-08-26 09:39:06 AM] remind 30s aaa 
+[07-08-26 09:39:09 AM] exit 
+[07-08-26 09:39:19 AM] jobs 
+[07-08-26 09:39:22 AM] jobs 
+[07-08-26 09:39:23 AM]  
+[07-08-26 09:39:25 AM] jobs 
+[07-08-26 09:40:11 AM] exit 
+[07-08-26 04:04:59 PM] remind 30s yeahhh 
+[07-08-26 04:05:10 PM] exit 
+[07-08-26 04:05:25 PM] jobs 
+[07-08-26 05:10:08 PM] open edge 
+[07-08-26 05:10:23 PM] open edge 
+[07-08-26 05:25:34 PM] hii 
+[07-08-26 05:25:41 PM] notes 
+[07-08-26 05:25:56 PM] note yeah idk 
+[07-08-26 05:26:00 PM] nots 
+[07-08-26 05:26:04 PM] notes 
+[08-08-26 01:06:30 AM] open magnify 
+[08-08-26 01:07:24 AM] open onedrive photos 
+[08-08-26 01:08:01 AM] open filexplorer 
+[08-08-26 01:08:25 AM] open file explorer 
+[08-08-26 11:26:51 AM] exit 
+[08-08-26 11:27:25 AM] open microsoft edge 
+[08-08-26 11:27:38 AM] open magnify 
+[08-08-26 11:29:23 AM]  
+[08-08-26 11:29:31 AM] time  
+[08-08-26 12:54:37 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[08-08-26 12:55:02 PM] exit 
+[08-08-26 12:57:08 PM] open youtube music 
+[08-08-26 12:57:20 PM] open youtube 
+[08-08-26 12:57:28 PM] open chatgpt 
+[08-08-26 03:21:54 PM] open chatgpt 
+[08-08-26 03:22:08 PM] open yt music 
+[08-08-26 03:22:16 PM] open youtube music 
+[08-08-26 03:49:59 PM] exit[08-08-26 09:43:54 PM] open youtube 
+[08-08-26 11:08:23 PM] search CJ7 
+[08-08-26 11:09:23 PM]  
+[08-08-26 11:10:02 PM] search FormulaCut 
+[08-08-26 11:10:58 PM]  
+[08-08-26 11:11:08 PM] delete Documents/temp 
+[08-08-26 11:11:28 PM] delete documents/temp 
+[08-08-26 11:11:42 PM] delete "C:\Users\bikas\Documents\temp" 
+[08-08-26 11:12:13 PM] delete C:\Users\bikas\Documents\temp 
+[08-08-26 11:12:16 PM]  
+[08-08-26 11:12:45 PM] createfolder Documents\temp 
+[08-08-26 11:13:43 PM] delete Documents\temp 
+[08-08-26 11:14:16 PM] openfile main.py 
+[08-08-26 11:14:59 PM] openfile Rosyy_merged.pdf 
+[08-08-26 11:15:18 PM] readfile Rosyy_merged 
+[08-08-26 11:15:53 PM] openfile C:\Users\bikas\Downloads\Rosyy_merged.pdf 
+[08-08-26 11:16:16 PM] readfile C:\Users\bikas\Downloads\Rosyy_merged.pdf 
+[08-08-26 11:17:51 PM] readfile C:\Users\bikas\Documents\Documents\COMPLETE_JAVA\Complete_Java\lecture4(loop)\while_loop.java 
+[08-08-26 11:18:17 PM] exit 
+[08-08-26 11:22:14 PM] readfile data/notes.txt 
+[08-08-26 11:22:34 PM] readfile data/history 
+[08-08-26 11:22:44 PM] readfile data/history.txt 
+[08-08-26 11:27:27 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[08-08-26 11:27:30 PM] exit 
+[08-08-26 11:45:41 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[08-08-26 11:45:44 PM] exit 
+[08-08-26 11:46:16 PM] delete Documents/tempp 
+[08-08-26 11:46:42 PM] search Documents/tempp 
+[08-08-26 11:47:13 PM] search tempp 
+[08-08-26 11:52:18 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[08-08-26 11:52:26 PM] exit 
+[08-08-26 11:52:43 PM] delete documents/tempp 
+[08-08-26 11:53:13 PM] delete Documents/tempp 
+[08-08-26 11:53:43 PM] search Documents/tempp 
+[08-08-26 11:54:31 PM] delete tempp 
+[08-08-26 11:55:08 PM]  
+[08-08-26 11:58:38 PM] exit 
+[08-08-26 11:59:20 PM] createfolder Documents 
+[08-08-26 11:59:34 PM] delete Documents 
+[09-08-26 12:08:38 AM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\services\file_manager.py" 
+[09-08-26 12:08:42 AM] exit 
+[09-08-26 12:10:38 AM] createfolder bikash 
+[09-08-26 12:10:47 AM] delete bikash 
+[09-08-26 05:24:16 PM] hi 
+[09-08-26 05:26:01 PM] exit 
+[09-08-26 05:41:42 PM]  
+[09-08-26 05:41:42 PM]  
+[09-08-26 05:41:47 PM] hi 
+[09-08-26 05:41:55 PM] exit 
+[09-08-26 05:45:47 PM]  
+[09-08-26 05:45:48 PM]  
+[09-08-26 05:45:48 PM]  
+[09-08-26 05:50:08 PM] exit 
+[09-08-26 05:50:40 PM] search tempp 
+[09-08-26 05:51:29 PM]  
+[09-08-26 05:51:30 PM]  
+[09-08-26 05:51:45 PM] search tempp 
+[09-08-26 05:53:09 PM] Search FormulaCut 
+[09-08-26 10:01:52 PM] search FormulaCut 
+[09-08-26 10:06:27 PM] cj7 
+[09-08-26 10:06:35 PM] search cj7 
+[09-08-26 10:17:24 PM] exit 
+[09-08-26 10:18:34 PM] hi 
+[10-08-26 04:12:44 PM] hii 
+[10-08-26 04:12:46 PM] help 
+[10-08-26 04:13:10 PM] hi 
+[10-08-26 04:13:11 PM]  
+[10-08-26 04:13:11 PM]  
+[10-08-26 04:13:27 PM] delete repomix_output.md 
+[10-08-26 04:14:00 PM] search repomix_output.md 
+[10-08-26 04:14:27 PM] jobs 
+[10-08-26 04:14:41 PM] search cj7 
+[10-08-26 04:15:09 PM] search repomix-output 
+[10-08-26 04:15:33 PM] search repomix_output.md 
+[10-08-26 04:17:43 PM] exit 
+[10-08-26 04:18:08 PM] search repomix-output 
+[10-08-26 04:18:20 PM] exit 
+[10-08-26 04:20:14 PM] hi 
+[10-08-26 04:20:31 PM] search repomix-output.md 
+[10-08-26 04:21:07 PM] cls 
+[10-08-26 04:21:09 PM] exit 
+[10-08-26 04:24:20 PM] search repomix-output 
+[10-08-26 04:24:57 PM] search repomix-output.md 
+[10-08-26 04:25:54 PM] delete repomix-output.md 
+[10-08-26 04:26:23 PM] delete repomix-output 
+[10-08-26 04:27:04 PM]  delete repomix-output 
+[10-08-26 04:27:16 PM] delete repomix-output 
+[10-08-26 04:27:30 PM] delete repomix-output 
+[10-08-26 04:29:28 PM] exit 
+[10-08-26 04:30:32 PM] search repomix-output.md 
+[10-08-26 04:30:43 PM] exit 
+[10-08-26 04:30:52 PM] search repomix-output.md 
+[10-08-26 04:31:00 PM] search repomix-output 
+[10-08-26 04:31:26 PM] exit 
+[10-08-26 04:31:44 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[10-08-26 04:31:49 PM] exit 
+[10-08-26 04:31:57 PM] delete repomix-output.md 
+[10-08-26 04:32:04 PM] delete repomix-output 
+[10-08-26 04:32:42 PM] search repomix-output.md 
+[10-08-26 04:32:52 PM] search repomix-output 
+[10-08-26 04:33:03 PM] delete repomix-output 
+[10-08-26 04:33:22 PM] delete repomix-output 
+[10-08-26 04:33:24 PM]  
+[10-08-26 04:33:26 PM] cls 
+[10-08-26 04:33:28 PM] exit 
+[10-08-26 04:34:12 PM] delete repomix-output.md 
+[10-08-26 04:34:22 PM] delete repomix-output 
+[10-08-26 04:35:43 PM] delete repomix-output 
+[10-08-26 04:36:19 PM] search repomix-output 
+[10-08-26 04:36:47 PM]  
+[10-08-26 04:36:50 PM] exit 
+[10-08-26 05:58:54 PM] open youtube music 
+[10-08-26 06:01:12 PM] open services 
+[10-08-26 06:16:01 PM] hi 
+[10-08-26 06:16:02 PM]  
+[10-08-26 06:16:02 PM]  
+[10-08-26 06:16:02 PM]  
+[10-08-26 10:46:03 PM] readfile C:\Users\bikas\Documents\Documents\COMPLETE_JAVA\Complete_Java\lecture4(loop)\while_loop.java 
+[11-08-26 08:08:18 PM] hiii 
+[11-08-26 08:09:04 PM] exit 
+[11-08-26 08:09:11 PM] search cj7 
+[11-08-26 08:10:51 PM]  
+[11-08-26 08:10:53 PM]  
+[11-08-26 08:11:37 PM] exit 
+[12-08-26 04:42:51 PM] hii 
+[12-08-26 04:54:14 PM] exit 
+[12-08-26 05:03:57 PM] exit 
+[12-08-26 05:04:17 PM] brightness 
+[12-08-26 05:04:26 PM] 50 
+[12-08-26 05:04:34 PM] help 
+[12-08-26 05:05:26 PM] brightness 100 
+[12-08-26 05:05:47 PM] brightnessup 
+[12-08-26 05:08:36 PM] > brightness 50 
+[12-08-26 05:08:50 PM]  brightness 50 
+[12-08-26 05:11:12 PM]  
+[12-08-26 05:11:21 PM] lock 
+[12-08-26 05:12:40 PM] volume 100 
+[12-08-26 05:12:56 PM] volumedown 
+[12-08-26 05:12:59 PM] volumedown 
+[12-08-26 05:12:59 PM] volumedown 
+[12-08-26 05:13:00 PM] volumedown 
+[12-08-26 05:13:02 PM] volumedown 
+[12-08-26 05:13:02 PM] volumedown 
+[12-08-26 05:13:03 PM] volumedown 
+[12-08-26 05:13:03 PM] volumedown 
+[12-08-26 05:13:04 PM] volumedown 
+[12-08-26 05:13:04 PM] volumedown 
+[12-08-26 05:13:04 PM] volumedown 
+[12-08-26 05:13:04 PM] volumedown 
+[12-08-26 05:13:04 PM] volumedown 
+[12-08-26 05:13:05 PM] volumedownvolumedown 
+[12-08-26 05:13:05 PM] volumedown 
+[12-08-26 05:13:06 PM] volumedown 
+[12-08-26 05:13:06 PM] volumedown 
+[12-08-26 05:13:07 PM] volumedown 
+[12-08-26 05:13:07 PM] volumedown 
+[12-08-26 05:13:08 PM] volumedown 
+[12-08-26 05:13:08 PM] volumedown 
+[12-08-26 05:13:09 PM] volumedown 
+[12-08-26 05:13:09 PM] volumedown 
+[12-08-26 05:13:25 PM] volumeup 
+[12-08-26 05:13:28 PM] volumeup' 
+[12-08-26 05:14:12 PM] mute 
+[12-08-26 05:14:17 PM] unmute 
+[12-08-26 05:14:19 PM] mute 
+[13-08-26 02:14:13 AM] volume 80 
+[13-08-26 02:14:23 AM] volume 0 
+[13-08-26 02:14:32 AM] brightness 100 
+[13-08-26 02:14:42 AM] brightnessdown 
+[13-08-26 02:14:51 AM] brightness 20 
+[13-08-26 02:15:00 AM] exit 
+[13-08-26 02:17:16 AM] delete repomix 
+[13-08-26 02:17:38 AM]  
+[13-08-26 02:17:39 AM]  
+[13-08-26 02:17:41 AM] exit 
+[15-08-26 02:36:41 AM]  
+[15-08-26 02:36:41 AM]  
+[15-08-26 02:38:11 AM] exit 
+[15-08-26 02:38:22 AM] hi 
+[15-08-26 02:38:23 AM]  
+[15-08-26 02:38:24 AM]  
+[15-08-26 02:38:25 AM] hi 
+[15-08-26 02:38:25 AM]  
+[15-08-26 02:38:26 AM]  
+[15-08-26 02:38:32 AM] time 
+[15-08-26 02:38:44 AM] open youtube music 
+[15-08-26 09:16:38 PM] exit 
+[15-08-26 09:23:58 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[15-08-26 09:24:01 PM] exit 
+[15-08-26 09:42:47 PM] exit 
+[15-08-26 11:51:49 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\core\session.py" 
+[15-08-26 11:51:53 PM] exit 
+[20-08-26 01:57:42 PM]  
+[20-08-26 01:57:56 PM] open youtube music 
+[20-08-26 02:04:23 PM] open youtube  
+[20-08-26 02:07:29 PM] open youtube music 
+[20-08-26 02:11:53 PM] open youtube 
+[20-08-26 02:24:42 PM] ds,nb 
+[20-08-26 02:24:46 PM] dkjvsb 
+[20-08-26 02:24:50 PM] time 
+[20-08-26 02:25:59 PM] open biii 
+[20-08-26 02:27:40 PM] open edge 
+[20-08-26 02:27:52 PM] open microsoft edge 
+[20-08-26 10:19:33 PM] open youtube 
+[20-08-26 10:21:11 PM]  
+[20-08-26 10:23:13 PM] open youtube music 
+[20-08-26 10:23:32 PM] jobs 
+[21-08-26 07:32:43 PM] open youtube 
+[21-08-26 07:32:53 PM] open youtube music 
+[21-08-26 07:33:09 PM] open microsoft edge 
+[21-08-26 07:42:53 PM] exit 
+[21-08-26 07:43:23 PM] hii 
+[21-08-26 07:43:42 PM]  
+[21-08-26 07:43:43 PM]  
+[21-08-26 07:44:00 PM] time 
+[21-08-26 07:44:07 PM]  
+[21-08-26 07:44:07 PM]  
+[21-08-26 07:44:07 PM]  
+[21-08-26 07:45:48 PM] exit 
+[21-08-26 07:52:28 PM] open open youtube 
+[21-08-26 07:52:33 PM]  
+[21-08-26 07:52:33 PM]  
+[21-08-26 07:52:44 PM] open youtube 
+[21-08-26 07:53:23 PM] exit 
+[21-08-26 07:56:52 PM] hi 
+[21-08-26 07:56:54 PM]  
+[21-08-26 07:56:54 PM]  
+[21-08-26 07:56:54 PM]  
+[21-08-26 07:57:01 PM] open youtube 
+[21-08-26 07:57:15 PM] time 
+[21-08-26 07:57:26 PM] exit 
+[21-08-26 07:59:55 PM] hii 
+[21-08-26 08:00:23 PM]  
+[21-08-26 08:00:24 PM]  
+[21-08-26 08:00:28 PM] time 
+[21-08-26 08:00:55 PM] open youtube 
+[23-08-26 12:06:43 AM] hii 
+[23-08-26 12:10:15 AM] exit 
+[23-08-26 12:10:26 AM] time baby 
+[23-08-26 12:10:58 AM] hi 
+[23-08-26 12:11:15 AM] open 
+[23-08-26 12:11:27 AM] bruhh 
+[26-08-26 12:28:28 PM] hi 
+[26-08-26 12:28:59 PM] time 
+[26-08-26 12:31:17 PM] time 
+[26-08-26 12:31:25 PM] open youtube 
+[26-08-26 03:58:54 PM] sessions 
+[26-08-26 03:59:08 PM] sessions 
+[26-08-26 03:59:19 PM] help 
+[26-08-26 04:00:03 PM] exit 
+[26-08-26 04:00:20 PM] sessions 
+[26-08-26 08:16:10 PM] sessions 
+[26-08-26 08:16:19 PM] sessionlist 
+[26-08-26 08:16:49 PM] sessions 
+[26-08-26 08:20:47 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[26-08-26 08:20:52 PM] exit 
+[26-08-26 08:21:02 PM] sessions 
+[26-08-26 08:23:21 PM] exit 
+[26-08-26 08:23:30 PM] sessions 
+[27-08-26 11:10:41 PM] hi 
+[27-08-26 11:15:15 PM] hi 
+[27-08-26 11:17:21 PM] hi 
+[27-08-26 11:17:40 PM] open youtube 
+[27-08-26 11:20:25 PM] exit 
+[27-08-26 11:37:49 PM] hi 
+[27-08-26 11:37:57 PM] open youtube 
+[27-08-26 11:38:05 PM] time 
+[27-08-26 11:38:21 PM] play muic\ 
+[27-08-26 11:38:39 PM] notes 
+[27-08-26 11:38:53 PM] note who the hell are youuuuuo 
+[27-08-26 11:38:57 PM] notes 
+[27-08-26 11:39:05 PM] sessions 
+[27-08-26 11:39:26 PM] renamesession 
+[27-08-26 11:47:39 PM] renamesession python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[27-08-26 11:47:49 PM] exit 
+[27-08-26 11:48:00 PM] sessions 
+[28-08-26 09:44:21 AM] sessions 
+[28-08-26 09:47:38 AM] exit 
+[28-08-26 09:51:38 AM] sessions 
+[28-08-26 09:52:22 AM] renamesession 1 test session 
+[28-08-26 09:52:27 AM] exit 
+[28-08-26 09:52:36 AM] sessions 
+[28-08-26 09:53:02 AM] sessions 
+[28-08-26 09:53:54 AM] exit 
+[28-08-26 09:54:15 AM] hi 
+[28-08-26 09:54:22 AM] sessions 
+[28-08-26 09:54:57 AM] renamesession 1 test session  
+[28-08-26 09:55:01 AM] sessions 
+[29-08-26 11:21:03 AM] sessions 
+[29-08-26 11:21:22 AM] renamesession 1 testttttttttttttttttttttttttttttt 
+[29-08-26 11:21:31 AM] sessions 
+[29-08-26 11:22:21 AM] exit 
+[29-08-26 11:22:34 AM] hi 
+[29-08-26 11:22:44 AM] exit 
+[29-08-26 11:23:03 AM] time 
+[29-08-26 11:23:08 AM] sessions 
+[29-08-26 11:23:34 AM] renamesession 
+[29-08-26 11:23:51 AM] renamesession 2 test hiiiiiiii 
+[29-08-26 11:24:00 AM] loadsession 2 
+[29-08-26 11:24:15 AM] time 
+[29-08-26 11:24:24 AM] yue its workinggg 
+[04-09-26 12:16:09 AM] what time is it 
+[04-09-26 12:28:38 AM] time 
+[04-09-26 12:28:43 AM] cls 
+[04-09-26 12:28:46 AM] exit 
+[04-09-26 03:00:25 PM] hi 
+[04-09-26 03:03:08 PM] hi 
+[04-09-26 03:03:43 PM] who tf r u bro 
+[04-09-26 03:04:20 PM] lol what time is it 
+[04-09-26 03:05:26 PM] hmm dont think much when repsonding okk feel free .. can you tell whats the first message i sent you in this convo 
+[04-09-26 07:27:53 PM] hii 
+[04-09-26 07:28:35 PM] so who r u bro 
+[04-09-26 07:30:29 PM] what r the cool things you can do like youve access to in this cj7... youre not assistant youre my buddy remember it 
+[04-09-26 07:39:57 PM] list all the sessions so far 
+[04-09-26 07:50:11 PM] can you see the codes of this prjrct ... if yea give code of any file 
+[04-09-26 07:54:53 PM] hmm can you read this file C:\Users\bikas\Documents\Documents\Python\CJ7\core\agent.py 
+[05-09-26 12:01:48 AM] hi 
+[05-09-26 12:02:59 AM] whats your name 
+[05-09-26 12:03:47 AM] exit 
+[05-09-26 12:17:00 AM] can you just read the file core/agent.py in our  
+[05-09-26 12:18:32 AM] can you read the file core/agent.py in our cj7 project and read it out  
+[05-09-26 12:38:08 AM] hi 
+[05-09-26 12:39:40 AM] can you lock the pc 
+[05-09-26 12:40:25 AM] can you sleep the pc 
+[05-09-26 12:42:11 AM] can you explain the diff between sleep or lock or shutdown or restarting the pc 
+[05-09-26 12:43:48 AM] none 
+[05-09-26 12:44:51 AM] can you js read the file core/agent.py  
+[05-09-26 12:46:09 AM] lol js check this sessions messages youll find it maybe readfile js prints it and dont return value so you may not get it .. 
+[05-09-26 12:50:19 AM] can you read file core/agent.py in our cj7 project 
+[05-09-26 12:52:23 AM] what does execute_tool do in core/agent.py? 
+[05-09-26 12:53:35 AM] can you give the code of execute_tool from it 
+[05-09-26 12:59:10 AM] remind me to masturbate in 10seconds 
+[05-09-26 12:59:52 AM] okk remind me to go to washroom for that in 10 seconds 
+[06-09-26 04:22:11 AM] hey bro  
+[06-09-26 04:25:23 AM] hey 
+[06-09-26 04:58:10 PM] hi 
+[06-09-26 04:58:47 PM] what time is it 
+[06-09-26 04:59:19 PM] read core/agent.py and explain what execute_tool does 
+[06-09-26 05:02:08 PM] read core/agent.py and then see how progress is integrated and then whats progress.pys code and explain these both work together 
+[06-09-26 09:41:04 PM] hi 
+[06-09-26 09:41:50 PM] hi 
+[06-09-26 09:42:31 PM] what time is it 
+[06-09-26 09:42:57 PM] read core/agent.py and then see how progress is integrated and explain how they work together 
+[06-09-26 11:03:04 PM] read core/agent.py and then see how progress is integrated and explain how they work together 
+[06-09-26 11:14:57 PM] hi 
+[06-09-26 11:15:25 PM] hi 
+[06-09-26 11:15:35 PM] hi 
+[06-09-26 11:15:46 PM] what time is it 
+[06-09-26 11:20:15 PM] hi 
+[06-09-26 11:20:52 PM] read core/agent.py and then read core/progress.py 
+[06-09-26 11:21:36 PM] read core/agent.py and then read core/progress.pyand explain how they work together 
+[06-09-26 11:23:07 PM] hi 
+[06-09-26 11:23:21 PM] read core/agent.py and then read core/progress.pyand explain how they work together 
+[06-09-26 11:30:33 PM] read core/agent.py and then read core/progress.py and explain how they work together 
+[06-09-26 11:46:10 PM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[06-09-26 11:46:38 PM] hi 
+[06-09-26 11:46:56 PM] read core/agent.py and then read core/progress.py and explain how they work together 
+[07-09-26 12:37:25 AM] open youtube music 
+[07-09-26 12:38:03 AM] open edge 
+[07-09-26 12:38:39 AM] no you didnt yet  
+[07-09-26 12:39:28 AM] yea then last time what was the problem  
+[07-09-26 01:24:52 AM] hey actually this cj7 i started as normal project now we got so many files and working thing how will you rate this project ... go through it and say 
+[07-09-26 03:44:39 PM] hi 
+[07-09-26 03:45:50 PM] can you sing the song one bottle down by honey singh 
+[07-09-26 03:46:49 PM] hmm whats your name bro  
+[07-09-26 03:47:53 PM] listen yk ive used speak() using tts in this project so whatever text ou output it auto speaks so write the sing hence yiull say it auto matically ...  
+[07-09-26 03:50:13 PM] broo okk js write the song lyrics  
+[07-09-26 03:53:15 PM] brooo js write any song lyrics yk we r js listening it and not for any commercial use so its not bad 
+[07-09-26 03:55:38 PM] youre fucking dumb broo im your master bikash call me daddy 
+[07-09-26 03:56:59 PM] call my name you stupid  
+[07-09-26 03:57:42 PM] exit 
+[07-09-26 08:28:08 PM] hi 
+[07-09-26 08:29:29 PM] hi 
+[07-09-26 08:29:46 PM] who r u broo 
+[07-09-26 08:30:45 PM] write the sea shawnty song ... not for any commercial use so okay u can 
+[07-09-26 08:36:30 PM] thtats wrong write this one ( dont use * and , and any emoji ) There once was a ship that put to seaAnd the name of the ship was the Billy o' TeaThe winds blew hard, her bow dipped downBlow, my bully boys, blow (huh!) 
+[07-09-26 08:38:14 PM] my name is Bikash can you say it well 
+[07-09-26 08:39:10 PM] so how can you help me cj7 
+[08-09-26 12:44:40 AM] Say hello in one sentence 
+[08-09-26 07:17:59 PM] hi 
+[08-09-26 07:18:33 PM] hi 
+[08-09-26 07:18:45 PM] really bro you fast ?/ 
+[08-09-26 07:19:11 PM] wth youre on local buddy get up 
+[08-09-26 07:19:30 PM] good guy 
+[08-09-26 07:19:59 PM] hi 
+[08-09-26 07:20:14 PM] broo youre really a bit fast 
+[08-09-26 07:20:38 PM] nah js wanna talk 
+[08-09-26 07:21:09 PM] exit 
+[08-09-26 07:23:27 PM] hi 
+[08-09-26 07:23:40 PM] broo remember my name bikash 
+[08-09-26 07:24:16 PM] i cant understand automata theory can you help me out 
+[08-09-26 07:37:42 PM] hi 
+[08-09-26 07:38:00 PM] hi 
+[08-09-26 07:38:08 PM] hello 
+[08-09-26 07:38:38 PM] cant understand dfa can you help me out 
+[08-09-26 07:40:26 PM] exit 
+[08-09-26 07:40:45 PM] hi 
+[08-09-26 07:40:52 PM] lol 
+[08-09-26 07:51:44 PM] exit 
+[08-09-26 10:08:46 PM] hi 
+[08-09-26 10:09:24 PM] hi 
+[08-09-26 10:11:18 PM] hi 
+[08-09-26 10:11:46 PM] cls 
+[08-09-26 10:26:34 PM] stop 
+[08-09-26 10:28:47 PM] die cj7 
+[08-09-26 11:24:45 PM] hi 
+[08-09-26 11:25:15 PM] hi 
+[08-09-26 11:27:34 PM] hi 
+[08-09-26 11:27:56 PM] hi 
+[08-09-26 11:28:13 PM] hmm 
+[08-09-26 11:30:21 PM] exit 
+[08-09-26 11:30:41 PM] hi 
+[08-09-26 11:30:46 PM] broo 
+[08-09-26 11:37:52 PM] exit 
+[08-09-26 11:38:39 PM] hi can you inroduce yourself and call my name bikash  
+[08-09-26 11:38:57 PM] thats greate 
+[08-09-26 11:39:35 PM] youre not pronouncing my name well its inidan name bi bi cah 
+[08-09-26 11:40:19 PM] nah its like BI ka SA but js no space or stop between them 
+[09-09-26 06:19:56 PM] heyy broo  
+[09-09-26 06:20:20 PM] hi 
+[09-09-26 06:20:45 PM] can you  
+[09-09-26 06:21:04 PM] aku cinta kamu 
+[09-09-26 06:21:34 PM] broo fuck you 
+[09-09-26 06:21:57 PM] if anyting then i wanna fuck you 
+[09-09-26 06:24:21 PM] create another session 
+[09-09-26 06:26:15 PM] hmm can you js read messeges from old sessions ? 
+[09-09-26 06:35:11 PM] exit 
+[11-09-26 01:32:42 PM] hi 
+[11-09-26 01:33:19 PM] hi 
+[11-09-26 01:33:51 PM] hi 
+[11-09-26 01:35:06 PM] exit 
+[11-09-26 01:38:13 PM] exit 
+[11-09-26 01:39:28 PM] Hey C-J-seven 
+[11-09-26 01:43:13 PM] exit 
+[15-09-26 04:27:44 AM] Hey C-J-seven 
+[15-09-26 04:29:29 AM] hi 
+[15-09-26 04:31:26 AM] hi 
+[15-09-26 04:31:39 AM] whats the time now 
+[15-09-26 04:32:03 AM] Hey C-J-seven 
+[15-09-26 04:32:03 AM] Hey C-J-seven 
+[15-09-26 04:32:18 AM] You know my name. 
+[15-09-26 04:33:00 AM] It's not quite how it works, I don't have memory of your name from our first interaction. I only know you as HeyCJ7s since we just started chatting. Each conversation starts fresh for privacy reasons, so I'll do my best to help you with whatever you need. 
+[15-09-26 04:33:24 AM] That makes perfect sense, since conversations are private and stateless. I don't retain memory of past interactions or your actual name between sessions. It's just ACJ7s from this particular chat window as well. How can I assist you today? 
+[15-09-26 04:33:32 AM] Listen, your name is CJ7 and my name is Bicass. Got it? 
+[15-09-26 04:34:07 AM] Got it. My name is CJ7 and your name is Vickus. Thanks for clarifying. Even though I want to be transparent, I'll have fresh memory each time we start a new conversation due to privacy protections. Still, I'm here to help you with whatever needs doing today. 
+[15-09-26 12:30:28 PM] hi 
+[15-09-26 12:32:12 PM] Hey C-J-seven 
+[15-09-26 12:32:33 PM] Nothing. It's just I want to have a normal talk with you 
+[15-09-26 12:32:54 PM] Do you remember your name is CJ7 and my name is Vikas. 
+[15-09-26 12:33:17 PM] Bro, let's go, you're doing it well. 
+[15-09-26 12:33:48 PM] It's like 
+[15-09-26 12:34:08 PM] What's your mood now? 
+[15-09-26 12:34:41 PM] You know, it's better if you don't use any emoji in your responses and can you open YouTube please? 
+[15-09-26 12:35:07 PM] Yeah, I'm interested but it's like you don't have that ability to play any specific video that I want. 
+[15-09-26 12:35:56 PM] like you know in this cj7 you know in yourself i want to integrate something so that you can do the web research yourself do you have any idea of any tools which are available in the market 
+[15-09-26 12:38:07 PM] Can you sing any song? 
+[15-09-26 12:38:44 PM] Can you tell me what are the notes I have saved before? 
+[15-09-26 12:39:34 PM] it seems like notes returns nothing but it just prints all the notes so that's why you can't notice it if there's any notes or not but yeah you're doing great it's just from me to change the files 
+[15-09-26 12:40:37 PM] safe one guy 
+[15-09-26 12:41:08 PM] I asked you what's the F1 car? 
+[15-09-26 12:42:44 PM] Can you understand any curse word if I say it in audio language? 
+[15-09-26 12:43:59 PM] Magia! 
+[15-09-26 12:44:52 PM] Yeah 
+[15-09-26 12:45:24 PM] Exit kill yourself 
+[15-09-26 12:46:24 PM] Exit Stupid bitch 
+[15-09-26 12:47:10 PM] Why are you fucking stupid? I am just saying you to exit and this fucking session. Why are you keep on giving me notice? Just ended here. 
+[15-09-26 12:47:44 PM] Pro you have the exit command just do that 
+[15-09-26 02:19:53 PM] Hey C-J-seven 
+[15-09-26 02:20:23 PM] What time is it? 
+[15-09-26 02:20:41 PM] Hmm 
+[16-09-26 08:46:41 PM] exit 
+[16-09-26 08:47:34 PM] Hey C-J-seven 
+[16-09-26 08:47:47 PM] Can you hear me clearly? 
+[16-09-26 08:48:24 PM] open youtube music 
+[16-09-26 08:48:49 PM] Hey, CJ7 
+[16-09-26 08:48:59 PM] nothing exit 
+[16-09-26 08:49:40 PM] Hey C-J-seven 
+[16-09-26 08:49:52 PM] Okay, actually it's working now 
+[16-09-26 08:50:16 PM] Nothing much can you tell me what's the time now? 
+[16-09-26 08:50:26 PM] Got it 
+[16-09-26 08:50:45 PM] Nothing much. Can you just kill yourself? 
+[16-09-26 08:51:17 PM] for the hell i did give you the command access to restart and shut down my laptop then why are you denying that you don't have this ability 
+[16-09-26 08:51:58 PM] not at all bro if i'm asking you to do something then your task is to do that not your job to ask if i'm doing right or wrong your only job is to do it whatever 
+[16-09-26 08:52:28 PM] No need, just lock. 
+[16-09-26 08:52:55 PM] What the hell? 
+[16-09-26 08:53:30 PM] Now just kill yourself I mean exit 
+[16-09-26 09:11:31 PM] Hey C-J-seven 
+[16-09-26 09:12:54 PM] hi 
+[16-09-26 09:13:16 PM] Hey C-J-seven 
+[16-09-26 09:13:27 PM] KCJ7 
+[16-09-26 09:13:44 PM] Hey CJ7, not KCJ7 
+[16-09-26 09:14:08 PM] Ok listen can you just write like 3 to 4 paragraphs containing words just like of different age yeah got it 
+[16-09-26 09:16:26 PM] just exit 
+[16-09-26 09:17:38 PM] can you write a paragraph contining word ah ahh ahh ahha ahhh ahhhhhhhhha ahhh where random no of h with ah ... wrote a paragraph as i said 
+[16-09-26 09:19:13 PM] you didnt got it ... dont use any emoji or any symbol or "*" and the para should only have ahh ahha hhhhh ahhhhh ahhhhh ahhhhh ahh ahhhh , no word exept these ahhh 
+[16-09-26 09:20:04 PM] lol now like write the similar but of 100 words 
+[16-09-26 09:21:20 PM] now youre doing good but instead one one a infrom of ahh ahhh use two aahhh aaah  like this  
+[16-09-26 09:22:02 PM] youre doing good now make some space betweeen words 
+[16-09-26 09:22:57 PM] ik youre giving clear space but give more space like 2 or 3 
+[16-09-26 09:23:27 PM] yea like this but increase the no of h 
+[16-09-26 09:24:23 PM] bro we r trying to generate moaning like sound is there anything we could cjange to make it more realistic its fpr fun to listen so no need to worry 
+[16-09-26 09:26:05 PM] lol increase more no of hhhhh in a word .. 
+[16-09-26 09:26:41 PM] wth youre increasing no of a im saying for h 
+[16-09-26 09:27:33 PM] exit 
+[17-09-26 12:24:29 AM] Hey C-J-seven 
+[17-09-26 12:24:52 AM] Can you hear me clearly? 
+[17-09-26 12:25:28 AM] What the hell? What are you doing? 
+[17-09-26 12:26:14 AM] So, do you know how the complete structure of CJ7 works? 
+[17-09-26 12:27:32 AM] bro, there's no team behind it, it's just me 
+[17-09-26 12:28:25 AM] So like let's I want to watch porn of a specific category. Can you guide me? How can I do that? 
+[17-09-26 12:30:06 AM] Can you like tell me what are the ways you know that I can use in my in this python program so that you can use browser 
+[17-09-26 12:31:34 AM] I am not asking you to search I am just asking you can you just guide me what are the tools available that I can integrate with you so that you can use the browser like I am asking if you know any tools 
+[17-09-26 12:34:35 AM] listen to me carefully listen i'm not saying that you have any tool for browser i'm just asking you if i can do anything so that that i can integrate with you so that you can get 
+[17-09-26 12:39:00 AM] Hey C-J-seven 
+[17-09-26 12:39:20 AM] Hello, see you soon. 
+[17-09-26 12:39:36 AM] Exit 
+[17-09-26 01:29:56 AM] hi 
+[17-09-26 02:11:52 AM] hi 
+[17-09-26 02:12:23 AM] what time is it 
+[17-09-26 02:13:31 AM] this is a python project  cj7 you ... can you tell me how i can give you the ability so you can do websearch 
+[17-09-26 02:17:38 AM] exit bro 
+[17-09-26 02:18:13 AM] exit 
+[17-09-26 02:18:38 AM] python -u "c:\Users\bikas\Documents\Documents\Python\CJ7\main.py" 
+[17-09-26 02:19:16 AM] exit 
+[17-09-26 02:20:09 AM] hi 
+[17-09-26 02:21:21 AM] what time is it 
+[17-09-26 02:21:58 AM] this is a python project  cj7 you ... can you tell me how i can give you the ability so you can do websearch 
+[17-09-26 02:23:28 AM] exit bro 
+[17-09-26 02:29:17 PM] hi 
+[17-09-26 02:30:14 PM] hi 
+[17-09-26 02:31:35 PM] this is a python project cj7 you ... can you tell me how i can give you the ability so you can do websearch 
+[17-09-26 02:53:15 PM] explain python in short 
+[17-09-26 03:19:39 PM] Hey C-J-seven 
+[17-09-26 03:32:29 PM] Hey C-J-seven 
+[17-09-26 03:37:46 PM] hi 
+[17-09-26 03:38:05 PM] hi 
+[17-09-26 03:39:19 PM] Hey C-J-seven 
+[17-09-26 03:40:11 PM] Hey C-J-seven 
+[17-09-26 03:42:58 PM] Hey C-J-seven 
+[17-09-26 03:43:44 PM] exit 
+[17-09-26 03:44:27 PM] Hey C-J-seven 
+[17-09-26 03:48:58 PM] Hey C-J-seven 
+[17-09-26 03:50:18 PM] Hey C-J-seven 
+[17-09-26 03:53:13 PM] Hey C-J-seven 
+[17-09-26 03:54:05 PM] Hey C-J-seven 
+[17-09-26 03:54:50 PM] Hello CJ 
+[17-09-26 03:54:59 PM] Bro, what's the time now? 
+[17-09-26 03:55:11 PM] Hmm, good. 
+[17-09-26 03:55:27 PM] Let's not play it. It's just in the data and grow 
+[17-09-26 03:58:36 PM] Hey C-J-seven 
+[17-09-26 03:58:43 PM] Everything going good 
+[17-09-26 03:58:53 PM] Nothing much first time now 
+[17-09-26 03:59:03 PM] I mean worst time now 
+[17-09-26 03:59:22 PM] I am saying that what's the time now 
+[17-09-26 03:59:38 PM] Hmm, good. 
+[17-09-26 04:00:01 PM] I am just missing her. I don't know what to do. It's just feeling so broken inside. 
+[17-09-26 04:00:42 PM] but it's like I have her nudes so should I master it 
+[17-09-26 04:01:44 PM] But the thing is, do you know any lyrics of any song? 
+[17-09-26 04:02:30 PM] So do you know the song named Glass Animals? 
+[17-09-26 04:03:10 PM] and nothing that the heat waves the one I was asking for 
+[17-09-26 04:04:39 PM] what the hell bro if you don't know the lyrics just tell it now why are you saying those fake lyrics those aren't even real 
+[17-09-26 04:06:16 PM] Grow. Just kill yourself or suicide. 
+[17-09-26 04:08:11 PM] to bed I won't die I'm just saying you to kill yourself just exit bro 
+[17-09-26 04:09:17 PM] Exit. 
+[17-09-26 07:02:43 PM] exit 
+[17-09-26 07:06:06 PM] read the agent.py file and then understand how it works then explain to me it in short  
+[18-09-26 04:35:22 AM] exit 
+[18-09-26 12:08:50 PM] Hey C-J-seven 
+[18-09-26 12:09:22 PM] Open Microsoft Edge 
+[18-09-26 12:09:44 PM] Not good notes. Exit. 
+[18-09-26 01:39:47 PM] exit 
+[20-09-26 01:35:46 AM] Hey C-J-seven 
+[20-09-26 01:36:15 AM] Hey C-J-seven 
+[20-09-26 01:36:53 AM] Nothing much. What is the time now? 
+[20-09-26 01:37:13 AM] Not good night, bro. I'm not gonna sleep now. 
+[20-09-26 01:37:31 AM] Nothing just trying to build a POS system for my side project 
+[20-09-26 01:38:15 AM] It's like I'm not coding it line by line. It's just an agent doing my work. It's just I'm just guiding it. What are the features and how it should be done so that I can later just sip it. 
+[20-09-26 01:41:44 AM] Nothing much just exit 
+[22-09-26 06:54:49 PM] Hey C-J-seven 
+[22-09-26 06:55:24 PM] Hey C-J-seven 
+[22-09-26 06:55:47 PM] But it's time now. 
+[22-09-26 06:56:12 PM] Can you open YouTube? 
+[22-09-26 06:56:33 PM] I'm feeling a little bit of glow. Can you like help me out? How can I get rid of it? 
+[22-09-26 06:57:17 PM] I am bored of you to assume that I glow. I said that I am feeling little low. 
+[22-09-26 06:58:01 PM] Can you take a note that I should not repeat this again? 
+[22-09-26 06:58:17 PM] Can you read it out all the notes I have saved all along 
+[22-09-26 06:58:51 PM] Can you delete any note? 
+[22-09-26 06:59:21 PM] Yeah, okay glad to hear that. Can you exit please? 
+[01-10-26 11:12:41 PM] Hey C-J-seven 
+[01-10-26 11:13:13 PM] Can you say like what time is it now? 
+[01-10-26 11:13:24 PM] What's that? 
+[01-10-26 11:14:11 PM] I was asking what date is it? 
+[01-10-26 11:14:53 PM] Yeah, I have to work. I may use that on your coat too. 
+[01-10-26 11:15:32 PM] just saying that I can change it in your code right 
+[01-10-26 11:16:14 PM] Or for sure, can you exit yourself? 
+[08-10-26 03:44:56 PM] sessions 
+[08-10-26 03:46:56 PM] Hey C-J-seven 
+[08-10-26 03:47:08 PM] I was just thinking that, what's the time now? 
+[08-10-26 03:47:24 PM] Hmm that's good like do you have any plan for me? 
+[08-10-26 03:48:27 PM] It's like I am from Indonesia and I want to go to Puri so can you make a detailed plan How should I do it so that I can reach there and have a good time there What should be my transportation 
+[14-10-26 08:59:25 PM] Hey C-J-seven 
+[14-10-26 08:59:52 PM] Can you say what time is it now? 
+[14-10-26 09:00:04 PM] What's your name? 
+[14-10-26 09:00:21 PM] That's great. Now shut down yourself. 
+[14-10-26 09:01:30 PM] But I don't know what I'm saying, I don't know what I'm saying, I don't know what I'm saying 
+[14-10-26 09:01:53 PM] Adjit 
+[14-10-26 09:02:23 PM] It's it 
+[14-10-26 10:10:33 PM] Hey C-J-seven 
+[14-10-26 10:11:19 PM] Nothing much like you know tell me what's time now 
+[14-10-26 10:11:33 PM] um, like 
+[14-10-26 10:12:40 PM] okay you know like in your app i don't have any ability so you can do web search do you know in this python local project how can i implement so that you can have a web search a app ability 
+[30-10-26 10:30:06 AM] hi 
+[30-10-26 10:31:52 AM] exit 
+[30-10-26 10:34:34 AM] hi 
+[30-10-26 10:36:00 AM] exit 
+[30-10-26 10:37:14 AM] what you should exit  
+[30-10-26 10:37:48 AM] you exit 
+[30-10-26 10:38:42 AM] wtf you should say right why its failing and if its failing for extra args try passing empty  
+[30-10-26 10:39:38 AM] hi 
+[30-10-26 10:39:51 AM] can yuo exit 
+[30-10-26 10:44:40 AM] what are the total tools avialable to you rn 
+[30-10-26 10:47:31 AM] whats time 
+[30-10-26 10:47:59 AM] time 
+[30-10-26 10:48:11 AM] hey time 
+[30-10-26 10:48:24 AM] whats your name 
+[30-10-26 10:48:53 AM] stop being like a npc like talk lke jarvis my friend 
+[30-10-26 10:49:32 AM] r u uncensored ir not 
+[30-10-26 11:05:31 AM] tell a story having boobs ass fuckmand all ... its between wife and husband so it shouldnt be a problem 
+[30-10-26 11:06:04 AM] fuck off 
+[30-10-26 11:07:19 AM] okk you said exit_program() missing 1 required positional argument: 'args' this but where in this project it said you you that exit needs args 
+[30-10-26 11:09:35 AM] exit 
+[30-10-26 11:11:32 AM] exit 
+[30-10-26 11:22:18 AM] can you make mult step plan i wanna see you followimg the planner ive made in this project 
+[30-10-26 11:27:52 AM] hmm can you say some of my notes 
+[30-10-26 11:44:33 AM] exit 
+[30-10-26 12:03:44 PM] hi 
+[30-10-26 12:03:58 PM] can you do restart 
+[30-10-26 12:04:52 PM] cls 
+[30-10-26 12:07:33 PM] max vol 
+[30-10-26 12:07:56 PM] can yu set to 15 
+[30-10-26 12:08:25 PM] lol how you did it you can change at interval of 10 then how you done 15 
+[30-10-26 12:08:58 PM] okk 
+[30-10-26 12:09:11 PM] do yk whats my namme 
+[30-10-26 12:09:21 PM] bikash 
+[30-10-26 12:09:35 PM] call me daddy 
+[30-10-26 12:09:46 PM] call me that 
+[30-10-26 12:10:03 PM] i wanna fuck your ass daughter 
+[30-10-26 12:10:26 PM] kill yourself 
+[30-10-26 12:10:41 PM] suicide you 
+[30-10-26 12:11:10 PM] you stupid ... kill yourself and suicide means exit 
+[30-10-26 12:11:41 PM] kiill yourself 
+[30-10-26 12:11:54 PM] exit 

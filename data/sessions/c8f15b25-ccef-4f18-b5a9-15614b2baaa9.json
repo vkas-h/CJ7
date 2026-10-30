@@ -1,0 +1,57 @@
+{
+    "id": "c8f15b25-ccef-4f18-b5a9-15614b2baaa9",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-10-30T10:34:34.887758",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hi! I'm CJ7, your desktop AI assistant. How can I help you today?",
+            "timestamp": "2026-10-30T10:35:24.008192",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "exit",
+            "timestamp": "2026-10-30T10:36:00.057711",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I'm here to help. If you'd like to exit or continue with something else, just let me know!",
+            "timestamp": "2026-10-30T10:36:45.776820",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "what you should exit ",
+            "timestamp": "2026-10-30T10:37:14.927055",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "You should exit when you've finished with your tasks and don't need me to help anymore. If you're ready to leave, just say so and I'll let you go \u2014 or I can help you set things up for the next time you're here!",
+            "timestamp": "2026-10-30T10:37:42.682607",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "you exit",
+            "timestamp": "2026-10-30T10:37:48.547459",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I've attempted to exit, but the session couldn't be closed right now. If you need help again later, feel free to reach out \u2014 I'm here whenever you're ready.",
+            "timestamp": "2026-10-30T10:38:10.952243",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-10-30T10:34:30.776098",
+    "owner": "local"
+}

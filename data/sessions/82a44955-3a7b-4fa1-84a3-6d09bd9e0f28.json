@@ -1,0 +1,81 @@
+{
+    "id": "82a44955-3a7b-4fa1-84a3-6d09bd9e0f28",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-15T04:31:26.189929",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?",
+            "timestamp": "2026-09-15T04:31:29.647351",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "whats the time now",
+            "timestamp": "2026-09-15T04:31:39.849731",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "It's currently 04:31 AM.",
+            "timestamp": "2026-09-15T04:31:52.312119",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hey C-J-seven",
+            "timestamp": "2026-09-15T04:32:03.000417",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hey there! Ready to help out with whatever is on your mind.",
+            "timestamp": "2026-09-15T04:32:09.059633",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "You know my name.",
+            "timestamp": "2026-09-15T04:32:18.282053",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Not exactly! I've been hearing you refer to yourself as C-J-seven, but I haven't been told your actual name. If you'd like to share it, feel free to let me know so I can use it to personalize our conversations!",
+            "timestamp": "2026-09-15T04:32:42.737547",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "It's not quite how it works, I don't have memory of your name from our first interaction. I only know you as HeyCJ7s since we just started chatting. Each conversation starts fresh for privacy reasons, so I'll do my best to help you with whatever you need.",
+            "timestamp": "2026-09-15T04:33:00.989604",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "That makes perfect sense! Since conversations are private and stateless, I don't retain memory of past interactions or your actual name between sessions. It's just \"HeyCJ7s\" from this particular chat window as well. How can I assist you today?",
+            "timestamp": "2026-09-15T04:33:21.004369",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Listen, your name is CJ7 and my name is Bicass. Got it?",
+            "timestamp": "2026-09-15T04:33:32.695147",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Got it! My name is CJ7, and your name is Bicass. Thanks for clarifying, even though I want to be transparent\u2014I'll have fresh memory each time we start a new conversation due to privacy protections. Still, I'm here to help you with whatever needs doing today! What can I work on for you right now?",
+            "timestamp": "2026-09-15T04:34:05.129569",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-15T04:31:20.772276",
+    "owner": "local"
+}

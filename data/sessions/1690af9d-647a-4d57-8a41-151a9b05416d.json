@@ -1,0 +1,57 @@
+{
+    "id": "1690af9d-647a-4d57-8a41-151a9b05416d",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "time",
+            "timestamp": "2026-08-29T11:23:03.059853",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "11:23 AM ",
+            "timestamp": "2026-08-29T11:23:03.060947",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "sessions",
+            "timestamp": "2026-08-29T11:23:08.067964",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "\nSaved Sessions\n---------------------------------------------\n1. Untitled Sessions [CURRENT]\n   29 Aug 2026 \u2022 11:22 AM\n\n2. Untitled Sessions\n   29 Aug 2026 \u2022 11:22 AM\n",
+            "timestamp": "2026-08-29T11:23:08.090482",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "renamesession",
+            "timestamp": "2026-08-29T11:23:34.053551",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Usage: renamesession <session number> <new title>",
+            "timestamp": "2026-08-29T11:23:34.054566",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "renamesession 2 test hiiiiiiii",
+            "timestamp": "2026-08-29T11:23:51.077307",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Session renamed to: test hiiiiiiii",
+            "timestamp": "2026-08-29T11:23:51.103439",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-08-29T11:22:57.807500",
+    "owner": "local"
+}

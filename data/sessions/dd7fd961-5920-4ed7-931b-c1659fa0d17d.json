@@ -1,0 +1,69 @@
+{
+    "id": "dd7fd961-5920-4ed7-931b-c1659fa0d17d",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-15T04:29:29.137217",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?",
+            "timestamp": "2026-09-15T04:29:47.926981",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hey C-J-seven",
+            "timestamp": "2026-09-15T04:32:03.081915",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "How can I assist you today?",
+            "timestamp": "2026-09-15T04:32:08.350079",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "You know my name.",
+            "timestamp": "2026-09-15T04:32:18.282107",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "That's not quite how it works\u2014I don't have memory of your name from our first interaction. I only know you as \"Hey C-J-seven\" since we just started chatting. Each conversation starts fresh for privacy reasons! So I'll do my best to help you with whatever you need.",
+            "timestamp": "2026-09-15T04:32:56.634521",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "That makes perfect sense, since conversations are private and stateless. I don't retain memory of past interactions or your actual name between sessions. It's just ACJ7s from this particular chat window as well. How can I assist you today?",
+            "timestamp": "2026-09-15T04:33:24.890426",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "You're absolutely right about privacy and the stateless nature of our interactions! That's a good clarification to have in mind. Since you mentioned \"C-J-seven\" earlier, I'll go with that as your reference here since we are still in the same conversation.\n\nHow can I assist you today?",
+            "timestamp": "2026-09-15T04:33:46.327792",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Got it. My name is CJ7 and your name is Vickus. Thanks for clarifying. Even though I want to be transparent, I'll have fresh memory each time we start a new conversation due to privacy protections. Still, I'm here to help you with whatever needs doing today.",
+            "timestamp": "2026-09-15T04:34:07.459320",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Ah, got it! So my name is Vickus and yours is CJ7. Since this is the same conversation thread, I can keep track of what we've discussed within this session, even though each new chat will start fresh.\n\nHow can I help you today?",
+            "timestamp": "2026-09-15T04:34:27.233949",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-15T04:28:20.611999",
+    "owner": "local"
+}

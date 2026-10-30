@@ -1,0 +1,57 @@
+{
+    "id": "5858708a-281f-42be-bc5d-e86d43b6f155",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "sessions",
+            "timestamp": "2026-10-08T15:44:56.388596",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "You have **58 saved sessions**. Here are the most recent ones:\n\n1. **Untitled Sessions** \u2014 01 Oct 2026 \u2022 11:12 PM\n2. **Untitled Sessions** \u2014 22 Sep 2026 \u2022 06:55 PM\n3. **Untitled Sessions** \u2014 20 Sep 2026 \u2022 01:36 AM\n4. **Untitled Sessions** \u2014 18 Sep 2026 \u2022 12:08 PM\n5. **Untitled Sessions** \u2014 17 Sep 2026 \u2022 03:58 PM\n... and so on, back to session **58. \"test hiiiiiiii\"** \u2014 29 Aug 2026 \u2022 11:22 AM.\n\nMost sessions were created on 17 Sep 2026. All are currently titled \"Untitled Sessions\" except #58 (\"test hiiiiiiii\").\n\nNeed me to load a specific one, rename any, or do something else?",
+            "timestamp": "2026-10-08T15:46:45.823931",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hey C-J-seven",
+            "timestamp": "2026-10-08T15:46:56.630588",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hey there! How can I help you today?",
+            "timestamp": "2026-10-08T15:47:00.982272",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "I was just thinking that, what's the time now?",
+            "timestamp": "2026-10-08T15:47:08.039560",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "It's **3:47 PM** right now.",
+            "timestamp": "2026-10-08T15:47:15.895446",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "Hmm that's good like do you have any plan for me?",
+            "timestamp": "2026-10-08T15:47:24.552454",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Not right now \u2014 I'm just hanging out with you! \ud83d\ude0a\n\nBut if you're looking for a plan, we could definitely brainstorm something. A few ideas:\n\n- **Plan a day out** \u2014 somewhere to go, food to try\n- **Organize a project** \u2014 files, folders, or a big task\n- **Learn something new** \u2014 pick a topic and dive in\n- **Just chill** \u2014 browse, read, or chat\n\nWhat's on your mind?",
+            "timestamp": "2026-10-08T15:48:07.329219",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-10-08T15:44:27.018057",
+    "owner": "local"
+}

@@ -1,0 +1,57 @@
+{
+    "id": "a52cefcb-5277-4504-84e9-a11db2380d5c",
+    "title": "Untitled Sessions",
+    "transcript": [
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-08T22:09:24.184287",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?",
+            "timestamp": "2026-09-08T22:09:46.359900",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "hi",
+            "timestamp": "2026-09-08T22:11:18.826771",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I'm here to help! What would you like to do? I can assist with:\n\n- Searching for files or folders\n- Reading, creating, or deleting files\n- Managing notes and reminders\n- System controls (volume, brightness, lock, sleep, etc.)\n- Scheduling jobs\n- Working with sessions\n\nWhat's on your mind?",
+            "timestamp": "2026-09-08T22:11:33.712967",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "cls",
+            "timestamp": "2026-09-08T22:11:46.514179",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "The computer's display has been cleared. How can I assist you further?",
+            "timestamp": "2026-09-08T22:12:00.381734",
+            "metadata": {}
+        },
+        {
+            "role": "user",
+            "content": "stop",
+            "timestamp": "2026-09-08T22:26:34.076166",
+            "metadata": {}
+        },
+        {
+            "role": "assistant",
+            "content": "I'm not sure how you'd like me to stop - whether that means exit CJ7 completely, lock your computer, sleep it, or something else? Please clarify so I can help you properly.",
+            "timestamp": "2026-09-08T22:27:33.929572",
+            "metadata": {}
+        }
+    ],
+    "context": {},
+    "created_at": "2026-09-08T22:09:17.940145",
+    "owner": "local"
+}
