@@ -97,6 +97,22 @@ class Agent:
             effort=policy.effort
         )
 
+
+    def before_tool_execution(self, tool_name, arguments):
+        """
+        Runs after permission approval and before command dispatch.
+        """
+        print(f"[HOOK] Starting tool: {tool_name}")
+
+
+    def after_tool_execution(self, tool_name, result):
+            """
+            Runs after command dispatch has returned a Result.
+            """
+            status = "SUCCESS" if result.success else "FAILED"
+            print(f"[HOOK] Tool {tool_name}: {status}")
+    
+
     def execute_tool(self, tool_call):
 
         tool_name = tool_call.function.name
@@ -120,7 +136,6 @@ class Agent:
                 "error": f"Unknown tool: {tool_name}"
             }
 
-        # Permission gate: must pass before dispatch.
         if not request_permission(
             command,
             arguments,
@@ -128,26 +143,24 @@ class Agent:
         ):
             return {
                 "success": False,
-                "error": f"Permission denied for tool: {tool_name}"
+                "output": None,
+                "error": f"Permission denied for tool: {tool_name}",
             }
+
+        # Hook 1: run before dispatch.
+        self.before_tool_execution(tool_name, arguments)
 
         action = Action(
             type=tool_name,
-            arguments=arguments
-            )
+            arguments=arguments,
+        )
 
         result = dispatch(action, self.commands)
 
-        if result.success:
-            return {
-                "success": True,
-                "output": result.output
-            }
+        # Hook 2: run after dispatch returns.
+        self.after_tool_execution(tool_name, result)
 
-        return {
-            "success": False,
-            "error": result.error
-        }
+        return result.to_dict()
 
 
     def run(self, messages):
