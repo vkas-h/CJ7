@@ -39,9 +39,8 @@ class Agent:
             "delete": "Deleting the file",
             "open": "Opening the application",
             "remind": "Setting the reminder",
-            "note": "Saving the note",
-            "notes": "Reading your notes",
-            "sessions": "Checking saved sessions",
+            "notes": "Managing your notes",
+            "session": "Managing saved sessions",
             "latestsession": "Checking the latest session",
             "loadsession": "Loading the session",
             "renamesession": "Renaming the session",
@@ -185,6 +184,7 @@ class Agent:
 
 
     def run(self, messages):
+
 
         llm_messages = [
 

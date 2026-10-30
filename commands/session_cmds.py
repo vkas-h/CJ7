@@ -2,174 +2,123 @@ from core.command import Command
 from core.session_manager import session_manager
 
 
-def list_sessions():
+def session(action, session_number=None, new_title=None):
+    """List, inspect, load, or rename saved sessions."""
 
-    sessions = session_manager.list_sessions()
+    action = action.strip().lower()
 
-    if not sessions:
-        return "No saved sessions found."
+    if action == "list":
+        sessions = session_manager.list_sessions()
 
-    lines = [
-        "",
-        "Saved Sessions",
-        "-" * 45
-    ]
+        if not sessions:
+            return "No saved sessions found."
 
-    for index, session in enumerate(
-        sessions,
-        start=1
-    ):
+        lines = ["Saved Sessions", "-" * 45]
 
-        created_at = session["created_at"].strftime(
-            "%d %b %Y • %I:%M %p"
+        for index, item in enumerate(sessions, start=1):
+            created_at = item["created_at"].strftime(
+                "%d %b %Y • %I:%M %p"
+            )
+
+            current = ""
+            active = session_manager.current_session
+
+            if active and item["id"] == active.id:
+                current = " [CURRENT]"
+
+            lines.append(f"{index}. {item['title']}{current}")
+            lines.append(f"   {created_at}")
+            lines.append("")
+
+        return "\n".join(lines)
+
+    if action == "latest":
+        item = session_manager.get_latest_session()
+
+        if item is None:
+            return "No saved sessions found."
+
+        return (
+            "Latest Session\n"
+            f"Title: {item.title}\n"
+            f"Created: {item.created_at.strftime('%d %b %Y • %I:%M %p')}"
         )
 
-        current = ""
+    if action == "load":
+        if session_number is None:
+            return "Provide the session number to load."
 
-        if (
-            session_manager.current_session
-            and session["id"]
-            == session_manager.current_session.id
-        ):
-            current = " [CURRENT]"
+        try:
+            session_number = int(session_number)
+        except (TypeError, ValueError):
+            return "Session number must be a number."
 
-        lines.append(
-            f"{index}. {session['title']}{current}"
+        item = session_manager.load_by_index(session_number)
+
+        if item is None:
+            return "Session not found."
+
+        return f"Loaded session: {item.title}"
+
+    if action == "rename":
+        if session_number is None:
+            return "Provide the session number to rename."
+
+        if not new_title or not new_title.strip():
+            return "Provide a non-empty new title."
+
+        try:
+            session_number = int(session_number)
+        except (TypeError, ValueError):
+            return "Session number must be a number."
+
+        item = session_manager.rename_session(
+            session_number,
+            new_title.strip()
         )
 
-        lines.append(
-            f"   {created_at}"
-        )
+        if item is None:
+            return "Session not found."
 
-        lines.append("")
-
-    return "\n".join(lines)
-
-
-def latest_session():
-
-    session = session_manager.get_latest_session()
-
-    if session is None:
-        return "No saved sessions found."
+        return f"Session renamed to: {item.title}"
 
     return (
-        "Latest Session\n"
-        f"Title: {session.title}\n"
-        f"Created: "
-        f"{session.created_at.strftime('%d %b %Y • %I:%M %p')}"
-    )
-
-
-def load_session(session_number):
-
-    if session_number is None:
-        return "Usage: loadsession <session number>"
-
-    try:
-        session_number = int(session_number)
-
-    except ValueError:
-        return "Session number must be a number."
-
-    session = session_manager.load_by_index(
-        session_number
-    )
-
-    if session is None:
-        return "Session not found."
-
-    return (
-        f"Loaded session: {session.title}"
-    )
-
-
-def rename_session(session_number , new_title):
-
-    # if len(args) < 2:
-    #     return (
-    #         "Usage: renamesession "
-    #         "<session number> <new title>"
-    #     )
-
-    try:
-        session_number = int(session_number)
-
-    except ValueError:
-        return "Session number must be a number."
-
-
-    session = session_manager.rename_session(
-        session_number,
-        new_title
-    )
-
-    if session is None:
-        return "Session not found."
-
-    return (
-        f"Session renamed to: {session.title}"
+        f"Unknown session action: {action}. "
+        "Use list, latest, load, or rename."
     )
 
 
 COMMANDS = [
-
     Command(
-        name="sessions",
-        function=list_sessions,
-        description="List all saved sessions.",
-        parameters={
-            "type": "object",
-            "properties": {},
-            "required": []
-        }
-    ),
-
-    Command(
-        name="latestsession",
-        function=latest_session,
-        description="Show information about the most recently created session.",
-        parameters={
-            "type": "object",
-            "properties": {},
-            "required": []
-        }
-    ),
-
-    Command(
-        name="loadsession",
-        function=load_session,
-        description="Load a saved session using its session number.",
+        name="session",
+        function=session,
+        description=(
+            "Manage saved conversations. Use action='list' to list sessions, "
+            "'latest' to inspect the latest session, 'load' with a "
+            "session_number to load one, or 'rename' with session_number "
+            "and new_title to rename one."
+        ),
+        toolset="memory",
         parameters={
             "type": "object",
             "properties": {
+                "action": {
+                    "type": "string",
+                    "enum": ["list", "latest", "load", "rename"],
+                    "description": "Operation to perform."
+                },
                 "session_number": {
                     "type": "integer",
-                    "description": "Number of the saved session to load."
-                }
-            },
-            "required": ["session_number"]
-        }
-    ),
-
-    Command(
-        name="renamesession",
-        function=rename_session,
-        description="Rename a saved session.",
-        parameters={
-            "type": "object",
-            "properties": {
-                "session_number": {
-                    "type": "integer",
-                    "description": "Number of the saved session to rename."
+                    "description": (
+                        "Session number, required for load and rename."
+                    )
                 },
                 "new_title": {
                     "type": "string",
-                    "description": "New title for the session."
+                    "description": "New title, required for rename."
                 }
             },
-            "required": ["session_number", "new_title"]
+            "required": ["action"]
         }
     )
-
 ]
