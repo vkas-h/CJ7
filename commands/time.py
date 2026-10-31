@@ -15,6 +15,7 @@ COMMANDS = [
     name="time",
     function=show_time,
     description="Get the current system time.",
+    toolset="core",
     parameters={
         "type": "object",
         "properties": {},

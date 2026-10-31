@@ -63,6 +63,7 @@ EXIT = Command(
     name="exit",
     function=exit_program,
     description="Exit CJ7.",
+    toolset="core",
     parameters={
         "type": "object",
         "properties": {},
@@ -75,6 +76,7 @@ HELP = Command(
     name="help",
     function=help_command,
     description="Shows available commands",
+    toolset="core",
     parameters={
         "type": "object",
         "properties": {},

@@ -11,6 +11,7 @@ COMMANDS = [
         name="open",
         function=open_app,
         description="Open an installed application.",
+        toolset="desktop",
         parameters={
             "type": "object",
             "properties": {

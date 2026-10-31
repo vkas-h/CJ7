@@ -62,6 +62,7 @@ COMMANDS = [
         name="search",
         function=search_command,
         description="Search configured directories live for files and folders by name. Does not search file contents.",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {
@@ -75,6 +76,7 @@ COMMANDS = [
         name="readfile",
         function=read_command,
         description="Read a UTF-8 text file with line numbers and SHA256. Optional line bounds limit the output. Use the returned hash for editfile.",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {
@@ -90,6 +92,7 @@ COMMANDS = [
         name="openfile",
         function=open_command,
         description="Open a file or folder using the operating system's default handler.",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {"path": {"type": "string", "description": "Full or relative path to open."}},
@@ -101,6 +104,7 @@ COMMANDS = [
         name="createfile",
         function=create_file_command,
         description="Create a new UTF-8 file without overwriting an existing file. Optional initial content is supported.",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {
@@ -115,6 +119,7 @@ COMMANDS = [
         name="editfile",
         function=edit_file_command,
         description="Replace one exact text segment. First call readfile and pass its SHA256 as expected_hash. Refuses stale hashes or ambiguous old_text and creates a backup.",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {
@@ -131,6 +136,7 @@ COMMANDS = [
         name="createfolder",
         function=create_folder_command,
         description="Create a directory, including missing parent directories.",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {"path": {"type": "string", "description": "Directory path to create."}},
@@ -142,6 +148,7 @@ COMMANDS = [
         name="list_directory",
         function=list_directory_command,
         description="List files and subdirectories in a directory; defaults to the user's home directory.",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {"path": {"type": "string", "description": "Directory path; defaults to '~'."}},
@@ -154,6 +161,7 @@ COMMANDS = [
         function=delete_command,
         description="Move a file or folder to the Recycle Bin. Protected system paths are blocked.",
         permission="confirm",
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {"path": {"type": "string", "description": "Path of the item to move to the Recycle Bin."}},
@@ -172,6 +180,7 @@ COMMANDS = [
             "across a project. Optionally restrict the search to a file "
             "or directory."
         ),
+        toolset="files",
         parameters={
             "type": "object",
             "properties": {

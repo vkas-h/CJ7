@@ -6,7 +6,7 @@ from core.dispatcher import dispatch
 from core.permissions import request_permission
 from core.progress import Progress
 from core.planner import PLAN_TOOL
-from core.reasoning import ReasoningRouter , ReasoningLevel
+from core.reasoning import ReasoningRouter 
 # from ollama import chat
 from services.tts import speak
 

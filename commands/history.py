@@ -28,6 +28,7 @@ COMMANDS = [
         name="history",
         function=show_history,
         description="Show the command history.",
+        toolset="memory",
         parameters={
             "type": "object",
             "properties": {},
