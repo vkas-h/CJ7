@@ -41,7 +41,7 @@ COMMANDS = [
         name="remind",
         function=remind,
         description="Set a reminder after a specified amount of time.",
-        toolset="Productivity",
+        toolset="productivity",
         parameters={
             "type": "object",
             "properties": {

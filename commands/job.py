@@ -16,7 +16,7 @@ COMMANDS = [
         name="jobs",
         function=show_jobs,
         description="Show all currently scheduled jobs.",
-        toolset="Productivity",
+        toolset="productivity",
         parameters={
             "type": "object",
             "properties": {},
@@ -28,7 +28,7 @@ COMMANDS = [
         name="cancel",
         function=cancel,
         description="Cancel a scheduled job using its job ID.",
-        toolset="Productivity",
+        toolset="productivity",
         permission="confirm",
         parameters={
             "type": "object",
