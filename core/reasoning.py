@@ -1,23 +1,45 @@
+
 from dataclasses import dataclass
 from enum import Enum
 
 
 class ReasoningLevel(Enum):
     NONE = "none"
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
+    XHIGH = "xhigh"
+    MAX = "max"
 
 
 @dataclass
 class ReasoningPolicy:
-    level: ReasoningLevel # ReasoningLevel is CJ7's internal classification and have nothing to do with ollama
-    think: bool
+    level: ReasoningLevel
+    think: bool | str
     effort: str | None
-    soft_budget: int
 
 
 class ReasoningRouter:
+
+    SIMPLE_MESSAGES = {
+        "hi",
+        "hello",
+        "hey",
+        "thanks",
+        "thank you",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "good night",
+    }
+
+    COMPLEX_PATTERNS = (
+        "debug this",
+        "debug my code",
+        "design an architecture",
+        "system architecture",
+        "complex reasoning",
+        "deep analysis",
+        "analyze this project",
+        "refactor the entire",
+    )
 
     def decide(self, messages):
 
@@ -28,93 +50,24 @@ class ReasoningRouter:
                 user_message = message.get("content", "")
                 break
 
-        text = user_message.lower().strip()
+        text = user_message.lower().strip().rstrip("!.?")
 
-        # -------------------------------------------------
-        # NONE
-        # -------------------------------------------------
-
-        simple_patterns = [
-            "hello",
-            "hi",
-            "hey",
-            "thanks",
-            "thank you",
-            "good morning",
-            "good evening",
-            "good night",
-            "what time",
-            "open ",
-            "launch ",
-            "start ",
-            "close ",
-            "mute",
-            "volume",
-            "brightness",
-        ]
-
-        if any(pattern in text for pattern in simple_patterns):
+        if text in self.SIMPLE_MESSAGES:
             return ReasoningPolicy(
                 level=ReasoningLevel.NONE,
                 think=False,
                 effort=None,
-                soft_budget=0,
             )
 
-        # -------------------------------------------------
-        # MEDIUM
-        # -------------------------------------------------
-
-        medium_patterns = [
-            "explain",
-            "compare",
-            "why",
-            "how does",
-            "how do",
-            "difference between",
-            "summarize",
-            "analyze",
-        ]
-
-        if any(pattern in text for pattern in medium_patterns):
+        if any(pattern in text for pattern in self.COMPLEX_PATTERNS):
             return ReasoningPolicy(
-                level=ReasoningLevel.MEDIUM,
+                level=ReasoningLevel.MAX,
                 think=True,
-                effort="medium",
-                soft_budget=1500,
+                effort="max",
             )
-
-        # -------------------------------------------------
-        # HIGH
-        # -------------------------------------------------
-
-        complex_patterns = [
-            "debug",
-            "design",
-            "architect",
-            "implement",
-            "refactor",
-            "optimize",
-            "plan",
-            "build",
-            "analyze this project",
-        ]
-
-        if any(pattern in text for pattern in complex_patterns):
-            return ReasoningPolicy(
-                level=ReasoningLevel.HIGH,
-                think=True,
-                effort="high",
-                soft_budget=4000,
-            )
-
-        # -------------------------------------------------
-        # LOW DEFAULT
-        # -------------------------------------------------
 
         return ReasoningPolicy(
-            level=ReasoningLevel.LOW,
+            level=ReasoningLevel.XHIGH,
             think=True,
-            effort="low",
-            soft_budget=700,
+            effort="xhigh",
         )

@@ -89,9 +89,7 @@ class Agent:
         policy = self.reasoning_router.decide(messages)
 
         print(
-            f"[REASONING] "
-            f"{policy.level.value} "
-            f"(soft budget: {policy.soft_budget})"
+            f"[REASONING] {policy.level.value}"
         )
 
         return stream_with_model(
@@ -100,7 +98,6 @@ class Agent:
             reasoning=policy.think,
             effort=policy.effort
         )
-
 
     def before_tool_execution(self, tool_name, arguments):
         """
