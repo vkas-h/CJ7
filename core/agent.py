@@ -31,37 +31,40 @@ class Agent:
         tool_name = tool_call.function.name
 
         descriptions = {
-            "search": "Searching the project",
-            "openfile": "Opening the file",
-            "readfile": "Reading the file",
-            "createfile": "Creating the file",
-            "createfolder": "Creating the folder",
-            "delete": "Deleting the file",
-            "open": "Opening the application",
-            "remind": "Setting the reminder",
-            "notes": "Managing your notes",
-            "session": "Managing saved sessions",
-            "latestsession": "Checking the latest session",
-            "loadsession": "Loading the session",
-            "renamesession": "Renaming the session",
+            # Files
+            "search": "Searching files",
+            "readfile": "Reading a file",
+            "openfile": "Opening a file",
+            "createfile": "Creating a file",
+            "editfile": "Editing a file",
+            "createfolder": "Creating a folder",
+            "list_directory": "Listing directory contents",
+            "delete": "Deleting a file",
+            "search_content": "Searching file contents",
+
+            # Desktop
+            "open": "Opening an application",
+
+            # Productivity
+            "remind": "Managing reminders",
+            "jobs": "Managing scheduled jobs",
+            "cancel": "Cancelling a scheduled job",
+
+            # Memory
+            "notes": "Managing notes",
+            "session": "Managing sessions",
+            "history": "Searching conversation history",
+
+            # Core
             "time": "Checking the time",
-            "volume": "Changing the volume",
-            "volumeup": "Increasing the volume",
-            "volumedown": "Decreasing the volume",
-            "mute": "Changing mute state",
-            "brightness": "Changing the brightness",
-            "brightnessup": "Increasing the brightness",
-            "brightnessdown": "Decreasing the brightness",
-            "lock": "Locking the computer",
-            "sleep": "Putting the computer to sleep",
-            "restart": "Restarting the computer",
-            "shutdown": "Shutting down the computer",
+
+            # System
+            "volume": "Controlling volume",
+            "brightness": "Controlling brightness",
+            "power": "Managing power actions",
         }
 
-        return descriptions.get(
-            tool_name,
-            f"Running {tool_name}"
-        )
+        return descriptions.get(tool_name, f"Running {tool_name}")
 
     
     # def think(self, messages):
