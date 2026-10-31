@@ -1,3 +1,6 @@
+
+import json
+
 from utils.plugin_loader import load_plugins
 from core.tool import commands_to_tools
 from services.llm import stream_with_model
@@ -6,12 +9,12 @@ from core.dispatcher import dispatch
 from core.permissions import request_permission
 from core.progress import Progress
 from core.planner import PLAN_TOOL
-from core.reasoning import ReasoningRouter 
-# from ollama import chat
+from core.reasoning import ReasoningRouter
+from core.message import Message
 from services.tts import speak
 
-MAX_TOOL_RESULT_CHARS = 8000
 
+MAX_TOOL_RESULT_CHARS = 8000
 
 
 class Agent:
@@ -64,33 +67,16 @@ class Agent:
             "power": "Managing power actions",
         }
 
-        return descriptions.get(tool_name, f"Running {tool_name}")
-
-    
-    # def think(self, messages):
-
-    #     policy = self.reasoning_router.decide(messages)
-
-    #     print(
-    #         f"[REASONING] "
-    #         f"{policy.level.value} "
-    #         f"(soft budget: {policy.soft_budget})"
-    #     )
-
-    #     return chat_with_model(
-    #         messages=messages,
-    #         tools=self.tools,
-    #         reasoning=policy.think,
-    #         effort=policy.effort
-    #     )
+        return descriptions.get(
+            tool_name,
+            f"Running {tool_name}"
+        )
 
     def think_stream(self, messages):
 
         policy = self.reasoning_router.decide(messages)
 
-        print(
-            f"[REASONING] {policy.level.value}"
-        )
+        print(f"[REASONING] {policy.level.value}")
 
         return stream_with_model(
             messages=messages,
@@ -105,15 +91,15 @@ class Agent:
         """
         print(f"[HOOK] Starting tool: {tool_name}")
 
-
     def after_tool_execution(self, tool_name, result):
-            """
-            Runs after command dispatch has returned a Result.
-            """
-            status = "SUCCESS" if result.success else "FAILED"
-            print(f"[HOOK] Tool {tool_name}: {status}")
-    
+        """
+        Runs after command dispatch has returned a Result.
+        """
+        status = "SUCCESS" if result.success else "FAILED"
+        print(f"[HOOK] Tool {tool_name}: {status}")
+
     def limit_result_text(self, text):
+
         if not isinstance(text, str):
             return text
 
@@ -127,8 +113,6 @@ class Agent:
             + f"\n\n[OUTPUT TRUNCATED: {omitted} characters omitted]"
         )
 
-
-    
     def execute_tool(self, tool_call):
 
         tool_name = tool_call.function.name
@@ -163,7 +147,6 @@ class Agent:
                 "error": f"Permission denied for tool: {tool_name}",
             }
 
-        # Hook 1: run before dispatch.
         self.before_tool_execution(tool_name, arguments)
 
         action = Action(
@@ -173,25 +156,18 @@ class Agent:
 
         result = dispatch(action, self.commands)
 
-        # Limit returned text before sending it to the model.
         result.output = self.limit_result_text(result.output)
         result.error = self.limit_result_text(result.error)
 
-        # Hook 2: run after dispatch and output processing.
         self.after_tool_execution(tool_name, result)
 
         return result.to_dict()
 
-
     def run(self, messages):
 
-
         llm_messages = [
-
             {
                 "role": "system",
-
-
                 "content": """
                 You are CJ7, a desktop AI assistant.
 
@@ -225,38 +201,50 @@ class Agent:
 
                 create_plan(
                     steps=[
-                {
-                    "type": "tool",
-                    "description": "Read core/agent.py"
-                },
-                {
-                    "type": "tool",
-                    "description": "Read core/progress.py"
-                },
-                {
-                    "type": "analysis",
-                    "description": "Analyze how Agent and Progress interact"
-                },
-                {
-                    "type": "response",
-                    "description": "Explain the integration"
-                }
-                
+                        {
+                            "type": "tool",
+                            "description": "Read core/agent.py"
+                        },
+                        {
+                            "type": "tool",
+                            "description": "Read core/progress.py"
+                        },
+                        {
+                            "type": "analysis",
+                            "description": "Analyze how Agent and Progress interact"
+                        },
+                        {
+                            "type": "response",
+                            "description": "Explain the integration"
+                        }
+                    ]
                 )
 
-                Do not expose chain-of-thought or internal reasoning. """
-
+                Do not expose chain-of-thought or internal reasoning.
+                """
             }
         ]
 
-        llm_messages += [
-            {
+        # Convert stored messages into Ollama's message format.
+        # Only pass metadata that Ollama needs.
+        for message in messages:
+
+            payload = {
                 "role": message.role,
                 "content": message.content
             }
-            
-            for message in messages
-        ]
+
+            metadata = message.metadata or {}
+
+            if message.role == "assistant":
+                if "tool_calls" in metadata:
+                    payload["tool_calls"] = metadata["tool_calls"]
+
+            elif message.role == "tool":
+                if "tool_name" in metadata:
+                    payload["tool_name"] = metadata["tool_name"]
+
+            llm_messages.append(payload)
 
         max_steps = 10
 
@@ -288,7 +276,6 @@ class Agent:
                 if thinking:
 
                     if not thinking_started:
-
                         print("\n[THINKING]\n")
                         thinking_started = True
 
@@ -348,11 +335,32 @@ class Agent:
                 "content": full_content,
             }
 
-            if full_thinking:
-                assistant_message["thinking"] = full_thinking
-
             if tool_calls:
-                assistant_message["tool_calls"] = tool_calls
+
+                serialized_tool_calls = [
+                    {
+                        "function": {
+                            "name": tool_call.function.name,
+                            "arguments": tool_call.function.arguments
+                        }
+                    }
+                    for tool_call in tool_calls
+                ]
+
+                assistant_message["tool_calls"] = serialized_tool_calls
+
+                # Save the assistant's tool-call message
+                messages.append(
+                    Message(
+                        role="assistant",
+                        content=full_content,
+                        metadata={
+                            "tool_calls": serialized_tool_calls
+                        }
+                    )
+                )
+
+                assistant_message["tool_calls"] = serialized_tool_calls
 
             llm_messages.append(assistant_message)
 
@@ -375,22 +383,37 @@ class Agent:
 
                 tool_name = tool_call.function.name
 
-                # create_plan is an internal operation
                 if tool_name == "create_plan":
-
                     result = self.execute_tool(tool_call)
 
                 else:
-
                     self.progress.start_step()
-
                     result = self.execute_tool(tool_call)
 
+                # Convert result into a JSON string for the model
+                tool_content = json.dumps(
+                    result,
+                    ensure_ascii=False,
+                    default=str
+                )
+
+                # Add tool response to model context
                 llm_messages.append({
                     "role": "tool",
                     "tool_name": tool_name,
-                    "content": str(result)
+                    "content": tool_content
                 })
+
+                # Preserve tool response in session transcript
+                messages.append(
+                    Message(
+                        role="tool",
+                        content=tool_content,
+                        metadata={
+                            "tool_name": tool_name
+                        }
+                    )
+                )
 
         self.progress.finish()
 

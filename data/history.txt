@@ -858,3 +858,19 @@
 [31-10-26 03:45:09 PM] hi 
 [31-10-26 03:45:30 PM] how much is your progress about the prev task i gave you 
 [31-10-26 03:46:09 PM] yup go ahead 
+[31-10-26 08:09:20 PM] hi 
+[31-10-26 08:10:03 PM] hi 
+[31-10-26 08:10:19 PM] hmm who r u 
+[31-10-26 08:16:24 PM] hi 
+[31-10-26 08:16:34 PM] what time is it 
+[31-10-26 08:20:45 PM] whats the exact number for 32k context windows 
+[31-10-26 08:21:22 PM] got a lil doubt that why , cant we js use 32000 but that specific number 
+[31-10-26 08:22:14 PM] do you have img gen capability 
+[31-10-26 08:22:34 PM] whats the underlying model you are 
+[31-10-26 08:23:17 PM] can you do complex math calc ? 
+[31-10-26 08:25:13 PM] Evaluate: 
+[31-10-26 08:25:20 PM] \[ 
+[31-10-26 08:25:29 PM] I=\int_0^1 \frac{\ln^2(x)\ln(1-x)}{x}\,dx 
+[31-10-26 08:25:41 PM] \] 
+[31-10-26 08:25:49 PM] Find the exact closed-form answer in terms of known mathematical constants. 
+[31-10-26 08:27:24 PM] Show every step, justify substitutions, and derive the result without relying on numerical approximations. 

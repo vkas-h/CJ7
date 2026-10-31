@@ -27,16 +27,23 @@ MODEL = "beam:cloud"
 #     return response
 
 
+
 def stream_with_model(
     messages,
     tools=None,
     reasoning=False,
-    effort=None ):
+    effort=None
+):
 
     if not reasoning:
         think = False
     else:
-        think = effort or True
+        supported_efforts = {"low", "medium", "high"}
+
+        if effort in supported_efforts:
+            think = effort
+        else:
+            think = True
 
     stream = chat(
         model=MODEL,
@@ -44,7 +51,7 @@ def stream_with_model(
         tools=tools or [],
         think=think,
         options={
-            "num_ctx": 8192
+            "num_ctx": 32768
         },
         stream=True
     )
