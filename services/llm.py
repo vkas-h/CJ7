@@ -1,31 +1,5 @@
 from ollama import chat
-
-MODEL = "beam:cloud"
-
-
-# def chat_with_model(
-#     messages,
-#     tools=None,
-#     reasoning=False,
-#     effort=None ):
-
-#     if not reasoning:
-#         think = False
-#     else:
-#         think = effort or True
-
-#     response = chat(
-#         model=MODEL,
-#         messages=messages,
-#         tools=tools or [],
-#         think=think,
-#         options={
-#             "num_ctx": 8192
-#         }
-#     )
-
-#     return response
-
+from config.settings import config
 
 
 def stream_with_model(
@@ -34,6 +8,8 @@ def stream_with_model(
     reasoning=False,
     effort=None
 ):
+
+    llm_config = config["llm"]
 
     if not reasoning:
         think = False
@@ -45,15 +21,13 @@ def stream_with_model(
         else:
             think = True
 
-    stream = chat(
-        model=MODEL,
+    return chat(
+        model=llm_config["model"],
         messages=messages,
         tools=tools or [],
         think=think,
         options={
-            "num_ctx": 32768
+            "num_ctx": llm_config["num_ctx"]
         },
         stream=True
     )
-
-    return stream

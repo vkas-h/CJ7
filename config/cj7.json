@@ -20,7 +20,13 @@
     "notes_file": "data/notes.txt",
     "jobs_file": "data/jobs.json",
     "log_file":"data/cj7.log",
-    "session_folder" : "data/sessions"
+    "session_folder" : "data/sessions",
+
+    "llm": {
+    "provider": "ollama",
+    "model": "beam:cloud",
+    "num_ctx": 32768
+}
 
 }
 

@@ -23,6 +23,7 @@ class Agent:
         self.commands = (
             commands if commands is not None else load_plugins()
         )
+
         self.tools = commands_to_tools(self.commands)
         self.tools.append(PLAN_TOOL)
 
@@ -30,11 +31,14 @@ class Agent:
         self.reasoning_router = ReasoningRouter()
         self.tool_context = tool_context
 
+    # --------------------------------------------------
+    # TOOL DESCRIPTIONS
+    # --------------------------------------------------
+
     def describe_tool(self, tool_call):
         tool_name = tool_call.function.name
 
         descriptions = {
-            # Files
             "search": "Searching files",
             "readfile": "Reading a file",
             "openfile": "Opening a file",
@@ -45,23 +49,18 @@ class Agent:
             "delete": "Deleting a file",
             "search_content": "Searching file contents",
 
-            # Desktop
             "open": "Opening an application",
 
-            # Productivity
             "remind": "Managing reminders",
             "jobs": "Managing scheduled jobs",
             "cancel": "Cancelling a scheduled job",
 
-            # Memory
             "notes": "Managing notes",
             "session": "Managing sessions",
             "history": "Searching conversation history",
 
-            # Core
             "time": "Checking the time",
 
-            # System
             "volume": "Controlling volume",
             "brightness": "Controlling brightness",
             "power": "Managing power actions",
@@ -71,6 +70,10 @@ class Agent:
             tool_name,
             f"Running {tool_name}"
         )
+
+    # --------------------------------------------------
+    # REASONING
+    # --------------------------------------------------
 
     def think_stream(self, messages):
 
@@ -85,18 +88,33 @@ class Agent:
             effort=policy.effort
         )
 
+    # --------------------------------------------------
+    # PERSISTENCE
+    # --------------------------------------------------
+
+    def persist_transcript(self, callback):
+        """
+        Persist the current transcript when a callback is provided.
+        Persistence errors are deliberately not swallowed.
+        """
+
+        if callback is not None:
+            callback()
+
+    # --------------------------------------------------
+    # TOOL HOOKS
+    # --------------------------------------------------
+
     def before_tool_execution(self, tool_name, arguments):
-        """
-        Runs after permission approval and before command dispatch.
-        """
         print(f"[HOOK] Starting tool: {tool_name}")
 
     def after_tool_execution(self, tool_name, result):
-        """
-        Runs after command dispatch has returned a Result.
-        """
         status = "SUCCESS" if result.success else "FAILED"
         print(f"[HOOK] Tool {tool_name}: {status}")
+
+    # --------------------------------------------------
+    # RESULT LIMITING
+    # --------------------------------------------------
 
     def limit_result_text(self, text):
 
@@ -112,6 +130,10 @@ class Agent:
             text[:MAX_TOOL_RESULT_CHARS]
             + f"\n\n[OUTPUT TRUNCATED: {omitted} characters omitted]"
         )
+
+    # --------------------------------------------------
+    # TOOL EXECUTION
+    # --------------------------------------------------
 
     def execute_tool(self, tool_call):
 
@@ -163,7 +185,11 @@ class Agent:
 
         return result.to_dict()
 
-    def run(self, messages):
+    # --------------------------------------------------
+    # MAIN AGENT LOOP
+    # --------------------------------------------------
+
+    def run(self, messages, on_update=None):
 
         llm_messages = [
             {
@@ -225,8 +251,7 @@ class Agent:
             }
         ]
 
-        # Convert stored messages into Ollama's message format.
-        # Only pass metadata that Ollama needs.
+        # Reconstruct model context from stored messages.
         for message in messages:
 
             payload = {
@@ -255,7 +280,6 @@ class Agent:
             thinking_started = False
             answer_started = False
 
-            full_thinking = ""
             full_content = ""
             tool_calls = []
 
@@ -266,10 +290,6 @@ class Agent:
             for chunk in stream:
 
                 message = chunk.message
-
-                # --------------------------------
-                # THINKING STREAM
-                # --------------------------------
 
                 thinking = getattr(message, "thinking", None)
 
@@ -284,12 +304,6 @@ class Agent:
                         end="",
                         flush=True
                     )
-
-                    full_thinking += thinking
-
-                # --------------------------------
-                # ANSWER STREAM
-                # --------------------------------
 
                 content = getattr(message, "content", None)
 
@@ -310,10 +324,6 @@ class Agent:
                     )
 
                     full_content += content
-
-                # --------------------------------
-                # TOOL CALLS
-                # --------------------------------
 
                 chunk_tool_calls = getattr(
                     message,
@@ -349,18 +359,22 @@ class Agent:
 
                 assistant_message["tool_calls"] = serialized_tool_calls
 
-                # Save the assistant's tool-call message
                 messages.append(
                     Message(
                         role="assistant",
                         content=full_content,
                         metadata={
-                            "tool_calls": serialized_tool_calls
+                            "tool_calls": serialized_tool_calls,
+                            "provenance": {
+                                "source_type": "assistant",
+                                "source_ref": "model_tool_call"
+                            }
                         }
                     )
                 )
 
-                assistant_message["tool_calls"] = serialized_tool_calls
+                # Save the tool-call request immediately.
+                self.persist_transcript(on_update)
 
             llm_messages.append(assistant_message)
 
@@ -390,30 +404,36 @@ class Agent:
                     self.progress.start_step()
                     result = self.execute_tool(tool_call)
 
-                # Convert result into a JSON string for the model
                 tool_content = json.dumps(
                     result,
                     ensure_ascii=False,
                     default=str
                 )
 
-                # Add tool response to model context
+                # Add tool result to model context.
                 llm_messages.append({
                     "role": "tool",
                     "tool_name": tool_name,
                     "content": tool_content
                 })
 
-                # Preserve tool response in session transcript
+                # Preserve tool result in transcript.
                 messages.append(
                     Message(
                         role="tool",
                         content=tool_content,
                         metadata={
-                            "tool_name": tool_name
+                            "tool_name": tool_name,
+                            "provenance": {
+                                "source_type": "tool",
+                                "source_ref": tool_name
+                            }
                         }
                     )
                 )
+
+                # Save each tool result immediately.
+                self.persist_transcript(on_update)
 
         self.progress.finish()
 

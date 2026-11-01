@@ -1,100 +1,128 @@
+
 from dataclasses import dataclass, field
 from datetime import datetime
-from .message import Message
-from config.settings import config
-import json
 from pathlib import Path
+import json
 import uuid
-import os
+
+from .message import Message
+from .store import store
 
 
 @dataclass
 class Session:
+
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    title: str = "Untitled Sessions"
+    title: str = "Untitled Session"
     transcript: list[Message] = field(default_factory=list)
     context: dict = field(default_factory=dict)
     created_at: datetime = field(default_factory=datetime.now)
     owner: str = "local"
 
+    def __post_init__(self):
+        self._ensure_context_column()
+
+    @staticmethod
+    def _ensure_context_column():
+        with store.connection() as db:
+            columns = {
+                row["name"]
+                for row in db.execute(
+                    "PRAGMA table_info(sessions)"
+                ).fetchall()
+            }
+
+            if "context_json" not in columns:
+                db.execute("""
+                    ALTER TABLE sessions
+                    ADD COLUMN context_json TEXT DEFAULT '{}'
+                """)
+
+    # --------------------------------------------------
+    # TRANSCRIPT
+    # --------------------------------------------------
 
     def add_message(self, message: Message):
         self.transcript.append(message)
 
-
     def get_messages(self):
         return self.transcript
 
+    # --------------------------------------------------
+    # PERSISTENCE
+    # --------------------------------------------------
 
     def save(self):
+        store.save_session(self)
 
-        session_folder = Path(config["session_folder"])
-        session_folder.mkdir(parents=True, exist_ok=True)
-
-        file = session_folder / f"{self.id}.json"
-        temp_file = session_folder/f"{self.id}.tmp"
-        data = {
-            "id": self.id,
-            "title": self.title,
-            "transcript": [
-                {
-                    "role": message.role,
-                    "content": message.content,
-                    "timestamp": message.timestamp.isoformat(),
-                    "metadata": message.metadata
-                }
-                for message in self.transcript
-            ],
-            "context": self.context,
-            "created_at": self.created_at.isoformat(),
-            "owner": self.owner
-        }
-
-        try:
-            with open(temp_file, "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=4)
-
-            if not temp_file.exists():
-                raise FileNotFoundError(
-                    f"Temporary session file was not created: {temp_file}"
-                )
-            
-            temp_file.replace(file)
-        except Exception:
-            if temp_file.exists():
-                temp_file.unlink()
-            raise
-
+        with store.connection() as db:
+            db.execute("""
+                UPDATE sessions
+                SET context_json = ?
+                WHERE id = ?
+            """, (
+                json.dumps(
+                    self.context,
+                    ensure_ascii=False,
+                    default=str
+                ),
+                self.id
+            ))
 
     @classmethod
     def load(cls, session_id):
-        file = (
-            Path(config["session_folder"])
-            / f"{session_id}.json"
+
+        stored = store.get_session(session_id)
+
+        if stored is None:
+            raise FileNotFoundError(
+                f"Session not found: {session_id}"
+            )
+
+        session_data = stored["session"]
+
+        transcript = []
+
+        for item in stored["messages"]:
+
+            metadata = json.loads(
+                item.get("metadata_json") or "{}"
+            )
+
+            if item.get("tool_name"):
+                metadata.setdefault(
+                    "tool_name",
+                    item["tool_name"]
+                )
+
+            if item.get("tool_calls_json"):
+                metadata.setdefault(
+                    "tool_calls",
+                    json.loads(item["tool_calls_json"])
+                )
+
+            transcript.append(
+                Message(
+                    role=item["role"],
+                    content=item["content"],
+                    timestamp=datetime.fromisoformat(
+                        item["created_at"]
+                    ),
+                    metadata=metadata
+                )
+            )
+
+        context = json.loads(
+            session_data.get("context_json") or "{}"
         )
 
-        with open(file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-        transcript = [
-            Message(
-                role=message["role"],
-                content=message["content"],
-                timestamp=datetime.fromisoformat(
-                    message["timestamp"]
-                ),
-                metadata=message["metadata"]
-            )
-            for message in data["transcript"]
-        ]
-
         return cls(
-            id=data["id"],
-            title=data.get("title", "Untitled Session"),
+            id=session_data["id"],
+            title=session_data["title"],
             transcript=transcript,
-            context=data["context"],
+            context=context,
             created_at=datetime.fromisoformat(
-                data["created_at"]
+                session_data["created_at"]
             ),
-            owner=data["owner"]
+            owner=session_data.get("owner", "local")
         )

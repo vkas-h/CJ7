@@ -1,31 +1,31 @@
-from pathlib import Path
+
+from datetime import datetime
 
 from .session import Session
-from config.settings import config
+from .store import store
 
 
 class SessionManager:
 
     def __init__(self):
-        self.session_folder = Path(
-            config["session_folder"]
-        )
-
-        self.session_folder.mkdir(
-            parents=True,
-            exist_ok=True
-        )
-
         self.current_session = None
 
+    # --------------------------------------------------
+    # CREATE
+    # --------------------------------------------------
 
     def create(self):
         session = Session()
+
+        session.save()
 
         self.current_session = session
 
         return session
 
+    # --------------------------------------------------
+    # LOAD
+    # --------------------------------------------------
 
     def load_session(self, session_id):
         session = Session.load(session_id)
@@ -33,36 +33,6 @@ class SessionManager:
         self.current_session = session
 
         return session
-
-
-    def list_sessions(self):
-        sessions = []
-
-        for file in self.session_folder.glob("*.json"):
-
-            try:
-                session = Session.load(file.stem)
-
-                sessions.append({
-                    "id": session.id,
-                    "title": session.title,
-                    "created_at": session.created_at
-                })
-
-            except Exception as e:
-                print(
-                    f"[WARNING] Failed to load session: {file.name}"
-                )
-                print(f"[ERROR] {e}")
-
-        # Newest first
-        sessions.sort(
-            key=lambda session: session["created_at"],
-            reverse=True
-        )
-
-        return sessions
-
 
     def get_by_index(self, index):
 
@@ -75,7 +45,6 @@ class SessionManager:
 
         return Session.load(session_id)
 
-
     def load_by_index(self, index):
 
         session = self.get_by_index(index)
@@ -87,7 +56,6 @@ class SessionManager:
 
         return session
 
-
     def get_latest_session(self):
 
         sessions = self.list_sessions()
@@ -95,10 +63,30 @@ class SessionManager:
         if not sessions:
             return None
 
-        return Session.load(
-            sessions[0]["id"]
-        )
+        return Session.load(sessions[0]["id"])
 
+    # --------------------------------------------------
+    # LIST
+    # --------------------------------------------------
+
+    def list_sessions(self):
+
+        sessions = store.list_sessions()
+
+        for session in sessions:
+            session["created_at"] = datetime.fromisoformat(
+                session["created_at"]
+            )
+
+            session["updated_at"] = datetime.fromisoformat(
+                session["updated_at"]
+            )
+
+        return sessions
+
+    # --------------------------------------------------
+    # RENAME
+    # --------------------------------------------------
 
     def rename_session(self, index, new_title):
 
@@ -107,12 +95,21 @@ class SessionManager:
         if session is None:
             return None
 
+        if not new_title or not new_title.strip():
+            return None
+
+        new_title = new_title.strip()
+
+        updated = store.rename_session(
+            session.id,
+            new_title
+        )
+
+        if not updated:
+            return None
+
         session.title = new_title
 
-        session.save()
-
-        # If we renamed the active session,
-        # update the active object too.
         if (
             self.current_session is not None
             and self.current_session.id == session.id
