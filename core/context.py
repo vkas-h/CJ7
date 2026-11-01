@@ -48,6 +48,13 @@ class ContextManager:
                 "Compaction threshold must be between 0 and 1."
             )
 
+        self.recent_tool_results_to_keep = 3
+
+        self.tool_output_placeholder = (
+            "[Tool output omitted from model context to save tokens. "
+            "The original output remains preserved in the SQLite transcript.]"
+        )
+
         self.context_window = context_window
         self.response_reserve_ratio = response_reserve_ratio
         self.compaction_threshold = compaction_threshold
@@ -261,6 +268,10 @@ class ContextManager:
         This is deliberately conservative because the current stored
         tool-call format does not yet preserve provider call IDs.
         """
+
+        if summarized_upto < 0:
+            return 0
+        
         start = max(0, summarized_upto + 1)
 
         if start >= len(transcript):
@@ -325,6 +336,120 @@ class ContextManager:
             "summarized_upto": int(summarized_upto)
         }
 
+
+        # --------------------------------------------------
+    # TOOL RESULT PRUNING
+    # --------------------------------------------------
+
+    def get_completed_tool_result_indices(self, transcript, start=0):
+        """
+        Find tool results belonging to complete assistant tool-call batches.
+
+        A batch is complete only when every expected tool result immediately
+        follows its assistant tool-call message.
+        """
+        completed_indices = []
+        index = start
+
+        while index < len(transcript):
+
+            message = transcript[index]
+
+            if message.role != "assistant":
+                index += 1
+                continue
+
+            tool_calls = self.get_message_tool_calls(message)
+
+            if not tool_calls:
+                index += 1
+                continue
+
+            expected_results = len(tool_calls)
+
+            result_start = index + 1
+            result_end = result_start + expected_results
+
+            if result_end > len(transcript):
+                index += 1
+                continue
+
+            batch_results = transcript[result_start:result_end]
+
+            if not all(
+                result.role == "tool"
+                for result in batch_results
+            ):
+                index += 1
+                continue
+
+            completed_indices.extend(
+                range(result_start, result_end)
+            )
+
+            index = result_end
+
+        return completed_indices
+
+    def prune_tool_results(
+        self,
+        projected_messages,
+        transcript,
+        transcript_start,
+        transcript_offset
+    ):
+        """
+        Replace older completed tool outputs in the model projection.
+
+        The original transcript and SQLite records remain untouched.
+        The three most recent completed tool results remain intact.
+        """
+        completed_indices = self.get_completed_tool_result_indices(
+            transcript,
+            start=transcript_start
+        )
+
+        if len(completed_indices) <= self.recent_tool_results_to_keep:
+            return
+
+        prune_indices = completed_indices[
+            :-self.recent_tool_results_to_keep
+        ]
+
+        placeholder = self.tool_output_placeholder
+        placeholder_tokens = self.estimate_text_tokens(placeholder)
+
+        for transcript_index in prune_indices:
+
+            projected_index = (
+                transcript_offset
+                + transcript_index
+                - transcript_start
+            )
+
+            projected_message = projected_messages[projected_index]
+
+            original_tokens = self.estimate_message_tokens(
+                projected_message
+            )
+
+            replacement = (
+                f"{placeholder} "
+                f"Tool: {projected_message.get('tool_name', 'unknown')}."
+            )
+
+            replacement_tokens = (
+                self.estimate_text_tokens(replacement) + 12
+            )
+
+            # Avoid replacing short results when it saves no tokens.
+            if original_tokens <= replacement_tokens:
+                continue
+
+            projected_message["content"] = replacement
+
+    
+
     # --------------------------------------------------
     # CONTEXT PROJECTION
     # --------------------------------------------------
@@ -381,19 +506,37 @@ class ContextManager:
                 )
             })
 
+        # Remember where transcript messages begin in the projection.
+        transcript_offset = len(projected_messages)
+
         for message in transcript[safe_start:]:
             projected_messages.append(
                 self.to_model_message(message)
             )
 
-        # Estimate all prompt components, including tool schemas.
+        # Include tool schemas in the context estimate.
         tool_tokens = self.estimate_tools_tokens(tools)
 
-        # Store the latest estimate for diagnostics.
         self.last_stats = self.get_stats(
             projected_messages,
             additional_tokens=tool_tokens
         )
+
+        # Prune older completed tool outputs only when needed.
+        if self.last_stats.needs_compaction:
+
+            self.prune_tool_results(
+                projected_messages=projected_messages,
+                transcript=transcript,
+                transcript_start=safe_start,
+                transcript_offset=transcript_offset
+            )
+
+            # Recalculate after pruning.
+            self.last_stats = self.get_stats(
+                projected_messages,
+                additional_tokens=tool_tokens
+            )
 
         return projected_messages
 
