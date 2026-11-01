@@ -246,27 +246,6 @@ class Agent:
             Do not expose chain-of-thought or internal reasoning.
             """
 
-        max_steps = 10
-
-        # Reconstruct model context from stored messages.
-        for message in messages:
-
-            payload = {
-                "role": message.role,
-                "content": message.content
-            }
-
-            metadata = message.metadata or {}
-
-            if message.role == "assistant":
-                if "tool_calls" in metadata:
-                    payload["tool_calls"] = metadata["tool_calls"]
-
-            elif message.role == "tool":
-                if "tool_name" in metadata:
-                    payload["tool_name"] = metadata["tool_name"]
-
-            llm_messages.append(payload)
 
         max_steps = 10
 

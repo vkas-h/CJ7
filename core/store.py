@@ -126,9 +126,10 @@ class Store:
                     title,
                     created_at,
                     updated_at,
+                    summarized_upto,
                     owner
                 )
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, -1, ?)
                 ON CONFLICT(id) DO NOTHING
             """, (
                 session.id,
@@ -149,9 +150,10 @@ class Store:
                     title,
                     created_at,
                     updated_at,
+                    summarized_upto,
                     owner
                 )
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, -1, ?)
 
                 ON CONFLICT(id) DO UPDATE SET
                     title = excluded.title,
@@ -532,30 +534,6 @@ class Store:
             """, (session_id,)).fetchone()
 
             return row["summary"] if row else ""
-
-
-    def update_session_summary(
-        self,
-        session_id,
-        summary,
-        summarized_upto
-    ):
-        with self.connection() as db:
-            db.execute("""
-                UPDATE sessions
-                SET
-                    summary = ?,
-                    summarized_upto = ?,
-                    updated_at = ?
-                WHERE id = ?
-            """, (
-                summary,
-                summarized_upto,
-                datetime.now().isoformat(),
-                session_id
-            ))
-
-
 
 # --------------------------------------------------
 # SHARED STORE INSTANCE
