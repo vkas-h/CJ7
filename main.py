@@ -157,7 +157,8 @@ while True:
 
     content = agent.run(
         messages,
-        on_update=session.save
+        on_update=session.save,
+        session_id=session.id
         )
 
     # Save final assistant response.

@@ -52,7 +52,7 @@ class Store:
                     created_at TEXT NOT NULL,
                     updated_at TEXT NOT NULL,
                     summary TEXT DEFAULT '',
-                    summarized_upto INTEGER DEFAULT 0,
+                    summarized_upto INTEGER NOT NULL DEFAULT -1,
                     owner TEXT DEFAULT 'local'
                 );
 
@@ -102,6 +102,14 @@ class Store:
 
                 CREATE INDEX IF NOT EXISTS idx_notes_session
                 ON notes(session_id);
+            """)
+
+            # Sessions without a summary have no summarized messages.
+            db.execute("""
+                UPDATE sessions
+                SET summarized_upto = -1
+                WHERE (summary IS NULL OR summary = '')
+                AND summarized_upto = 0
             """)
 
     # --------------------------------------------------
@@ -335,6 +343,64 @@ class Store:
 
             return cursor.rowcount > 0
 
+
+    # --------------------------------------------------
+    # SESSION CONTEXT
+    # --------------------------------------------------
+
+    def get_session_context(self, session_id):
+        with self.connection() as db:
+            row = db.execute("""
+                SELECT
+                    summary,
+                    summarized_upto
+                FROM sessions
+                WHERE id = ?
+            """, (session_id,)).fetchone()
+
+            if row is None:
+                return None
+
+            return {
+                "summary": row["summary"] or "",
+                "summarized_upto": row["summarized_upto"]
+            }
+
+    def update_session_summary(
+        self,
+        session_id,
+        summary,
+        summarized_upto
+    ):
+        if not isinstance(summary, str):
+            raise TypeError("Summary must be a string.")
+
+        if not isinstance(summarized_upto, int):
+            raise TypeError("Summary boundary must be an integer.")
+
+        if summarized_upto < -1:
+            raise ValueError("Summary boundary cannot be below -1.")
+
+        with self.connection() as db:
+            cursor = db.execute("""
+                UPDATE sessions
+                SET
+                    summary = ?,
+                    summarized_upto = ?,
+                    updated_at = ?
+                WHERE id = ?
+            """, (
+                summary,
+                summarized_upto,
+                datetime.now().isoformat(),
+                session_id
+            ))
+
+            if cursor.rowcount == 0:
+                raise FileNotFoundError(
+                    f"Session not found: {session_id}"
+                )
+
     # --------------------------------------------------
     # NOTES
     # --------------------------------------------------
@@ -456,6 +522,39 @@ class Store:
                 dict(row)
                 for row in rows
             ]
+
+    def get_session_summary(self, session_id):
+        with self.connection() as db:
+            row = db.execute("""
+                SELECT summary
+                FROM sessions
+                WHERE id = ?
+            """, (session_id,)).fetchone()
+
+            return row["summary"] if row else ""
+
+
+    def update_session_summary(
+        self,
+        session_id,
+        summary,
+        summarized_upto
+    ):
+        with self.connection() as db:
+            db.execute("""
+                UPDATE sessions
+                SET
+                    summary = ?,
+                    summarized_upto = ?,
+                    updated_at = ?
+                WHERE id = ?
+            """, (
+                summary,
+                summarized_upto,
+                datetime.now().isoformat(),
+                session_id
+            ))
+
 
 
 # --------------------------------------------------

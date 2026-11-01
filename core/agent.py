@@ -1,6 +1,6 @@
 
 import json
-
+from core.context import context_manager
 from utils.plugin_loader import load_plugins
 from core.tool import commands_to_tools
 from services.llm import stream_with_model
@@ -14,7 +14,7 @@ from core.message import Message
 from services.tts import speak
 
 
-MAX_TOOL_RESULT_CHARS = 8000
+MAX_TOOL_RESULT_CHARS = 2000
 
 
 class Agent:
@@ -189,67 +189,64 @@ class Agent:
     # MAIN AGENT LOOP
     # --------------------------------------------------
 
-    def run(self, messages, on_update=None):
+    def run(self, messages, on_update=None, session_id=None):
 
-        llm_messages = [
-            {
-                "role": "system",
-                "content": """
-                You are CJ7, a desktop AI assistant.
+        system_prompt = """
+            You are CJ7, a desktop AI assistant.
 
-                You have access to normal tools and an internal tool called
-                create_plan.
+            You have access to normal tools and an internal tool called
+            create_plan.
 
-                Rules:
+            Rules:
 
-                1. For simple conversational questions:
-                - Answer directly.
-                - Do not create a plan.
-                - Do not use tools unless necessary.
+            1. For simple conversational questions:
+            - Answer directly.
+            - Do not create a plan.
+            - Do not use tools unless necessary.
 
-                2. For a task requiring only one simple action:
-                - Use the required tool directly.
-                - Do not create a plan.
+            2. For a task requiring only one simple action:
+            - Use the required tool directly.
+            - Do not create a plan.
 
-                3. For a task requiring multiple meaningful steps:
-                - FIRST call create_plan.
-                - Give 2 to 5 concise meaningful task phases.
-                - Then perform the required tools.
+            3. For a task requiring multiple meaningful steps:
+            - FIRST call create_plan.
+            - Give 2 to 5 concise meaningful task phases.
+            - Then perform the required tools.
 
-                The plan should describe the user's task, not raw tool calls.
+            The plan should describe the user's task, not raw tool calls.
 
-                Example:
+            Example:
 
-                User:
-                "Read agent.py, inspect progress.py, and explain how they work together."
+            User:
+            "Read agent.py, inspect progress.py, and explain how they work together."
 
-                Good plan:
+            Good plan:
 
-                create_plan(
-                    steps=[
-                        {
-                            "type": "tool",
-                            "description": "Read core/agent.py"
-                        },
-                        {
-                            "type": "tool",
-                            "description": "Read core/progress.py"
-                        },
-                        {
-                            "type": "analysis",
-                            "description": "Analyze how Agent and Progress interact"
-                        },
-                        {
-                            "type": "response",
-                            "description": "Explain the integration"
-                        }
-                    ]
-                )
+            create_plan(
+                steps=[
+                    {
+                        "type": "tool",
+                        "description": "Read core/agent.py"
+                    },
+                    {
+                        "type": "tool",
+                        "description": "Read core/progress.py"
+                    },
+                    {
+                        "type": "analysis",
+                        "description": "Analyze how Agent and Progress interact"
+                    },
+                    {
+                        "type": "response",
+                        "description": "Explain the integration"
+                    }
+                ]
+            )
 
-                Do not expose chain-of-thought or internal reasoning.
-                """
-            }
-        ]
+            Do not expose chain-of-thought or internal reasoning.
+            """
+
+        max_steps = 10
 
         # Reconstruct model context from stored messages.
         for message in messages:
@@ -274,6 +271,13 @@ class Agent:
         max_steps = 10
 
         for step in range(max_steps):
+
+            llm_messages = context_manager.prepare_messages(
+                transcript=messages,
+                system_prompt=system_prompt,
+                tools=self.tools,
+                session_id=session_id
+            )
 
             stream = self.think_stream(llm_messages)
 
