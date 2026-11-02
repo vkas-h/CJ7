@@ -120,8 +120,6 @@ class Microphone:
         speech_start_time = None
         silence_start_time = None
 
-        recording_started_at = time.monotonic()
-
         all_audio = []
 
         # Keep audio from immediately before speech starts.
@@ -145,7 +143,31 @@ class Microphone:
             callback=callback,
         ):
 
+            recording_started_at = time.monotonic()
+            print("[MIC] Listening for speech (2.5s timeout)...")
+
+            
             while True:
+
+                # --------------------------------
+                # INITIAL SPEECH TIMEOUT
+                # --------------------------------
+
+                if (
+                    not speech_started
+                    and (
+                        time.monotonic()
+                        - recording_started_at
+                        >= self.START_TIMEOUT
+                    )
+                ):
+
+                    print("[MIC] No speech detected.")
+                    return None
+
+                # --------------------------------
+                # GET AUDIO
+                # --------------------------------
 
                 try:
 
@@ -154,22 +176,10 @@ class Microphone:
                     )
 
                 except queue.Empty:
-
-                    if (
-                        not speech_started
-                        and (
-                            time.monotonic()
-                            - recording_started_at
-                            >= self.START_TIMEOUT
-                        )
-                    ):
-
-                        print("[MIC] No speech detected.")
-                        return None
-
                     continue
 
                 now = time.monotonic()
+            
 
                 # --------------------------------
                 # VAD

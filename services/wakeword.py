@@ -80,12 +80,6 @@ class WakeWord:
         self.last_detection = 0.0
         self.last_score = 0.0
 
-        if self.debug and now - self._last_score_log >= 1.0:
-            print(
-                f"[WAKE] Listening score: {score:.3f} "
-                f"(threshold={self.threshold:.2f})"
-            )
-            self._last_score_log = now
 
         self._lock = threading.Lock()
 
@@ -107,6 +101,17 @@ class WakeWord:
                 -32768,
                 32767,
             ).astype(np.int16)
+            rms = float(np.sqrt(np.mean(audio.astype(np.float32) ** 2)))
+            peak = int(np.max(np.abs(audio.astype(np.int32))))
+
+            now = time.monotonic()
+
+            if self.debug and now - self._last_score_log >= 1.0:
+                print(
+                    f"[WAKE] Audio RMS={rms:.1f} | Peak={peak} "
+                    f"| Score={self.last_score:.3f}"
+                )
+                self._last_score_log = now
 
             prediction = self.model.predict(audio)
             score = float(prediction.get(self.model_key, 0.0))
@@ -114,6 +119,13 @@ class WakeWord:
             self.last_score = score
 
             now = time.monotonic()
+
+            if self.debug and now - self._last_score_log >= 1.0:
+                print(
+                    f"[WAKE] Listening score: {score:.3f} "
+                    f"(threshold={self.threshold:.2f})"
+                )
+                self._last_score_log = now
 
             if (
                 score >= self.threshold
