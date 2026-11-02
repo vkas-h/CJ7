@@ -377,14 +377,95 @@ class Store:
         if not isinstance(summary, str):
             raise TypeError("Summary must be a string.")
 
+        summary = summary.strip()
+
+        if len(summary) < 40:
+            raise ValueError("Summary is too short to be useful.")
+
+        if len(summary) > 8000:
+            raise ValueError("Summary exceeds the maximum length.")
+
         if not isinstance(summarized_upto, int):
             raise TypeError("Summary boundary must be an integer.")
 
-        if summarized_upto < -1:
-            raise ValueError("Summary boundary cannot be below -1.")
+        if isinstance(summarized_upto, bool):
+            raise TypeError("Summary boundary cannot be a boolean.")
+
+        if summarized_upto < 0:
+            raise ValueError("A persisted summary must cover at least one message.")
 
         with self.connection() as db:
-            cursor = db.execute("""
+            session = db.execute("""
+                SELECT summary, summarized_upto
+                FROM sessions
+                WHERE id = ?
+            """, (session_id,)).fetchone()
+
+            if session is None:
+                raise FileNotFoundError(
+                    f"Session not found: {session_id}"
+                )
+
+            latest = db.execute("""
+                SELECT MAX(position) AS latest_position
+                FROM messages
+                WHERE session_id = ?
+            """, (session_id,)).fetchone()
+
+            latest_position = latest["latest_position"]
+
+            if latest_position is None:
+                raise ValueError("Cannot summarize an empty session.")
+
+            if summarized_upto > latest_position:
+                raise ValueError(
+                    "Summary boundary exceeds the transcript."
+                )
+
+            old_summary = (session["summary"] or "").strip()
+            old_boundary = int(session["summarized_upto"])
+
+            if old_summary and summarized_upto < old_boundary:
+                raise ValueError(
+                    "Summary boundary cannot move backwards."
+                )
+
+            if not old_summary and old_boundary != -1:
+                old_boundary = -1
+
+            if summarized_upto < old_boundary:
+                raise ValueError(
+                    "Summary boundary cannot move backwards."
+                )
+
+            # Reject a boundary that cuts an assistant tool-call batch.
+            rows = db.execute("""
+                SELECT position, role, tool_calls_json
+                FROM messages
+                WHERE session_id = ?
+                  AND position <= ?
+                ORDER BY position DESC
+            """, (session_id, summarized_upto)).fetchall()
+
+            boundary_row = next(
+                (row for row in rows
+                 if row["position"] == summarized_upto),
+                None
+            )
+
+            if boundary_row is None:
+                raise ValueError("Summary boundary does not exist.")
+
+            if (
+                boundary_row["role"] == "assistant"
+                and boundary_row["tool_calls_json"]
+            ):
+                raise ValueError(
+                    "Summary boundary splits a tool exchange."
+                )
+
+            # Both fields are committed in one SQLite transaction.
+            db.execute("""
                 UPDATE sessions
                 SET
                     summary = ?,
@@ -397,11 +478,6 @@ class Store:
                 datetime.now().isoformat(),
                 session_id
             ))
-
-            if cursor.rowcount == 0:
-                raise FileNotFoundError(
-                    f"Session not found: {session_id}"
-                )
 
     # --------------------------------------------------
     # NOTES
@@ -525,6 +601,84 @@ class Store:
                 for row in rows
             ]
 
+
+    def search_context(
+        self,
+        query,
+        limit=5,
+        exclude_session_id=None
+        ):
+        
+        """
+        Search historical messages and notes through FTS5.
+
+        Results from the active session are excluded because its recent
+        transcript is already present in the model context.
+        """
+        if not query or not query.strip():
+            return []
+
+        terms = query.strip().split()
+
+        safe_query = " AND ".join(
+            '"' + term.replace('"', '""') + '"'
+            for term in terms
+        )
+
+        with self.connection() as db:
+            rows = db.execute("""
+                SELECT
+                    f.text,
+                    f.source,
+                    f.ref,
+                    bm25(search_fts) AS score,
+                    m.session_id AS message_session_id,
+                    n.session_id AS note_session_id
+                FROM search_fts AS f
+
+                LEFT JOIN messages AS m
+                    ON f.source = 'message'
+                    AND CAST(f.ref AS INTEGER) = m.id
+
+                LEFT JOIN notes AS n
+                    ON f.source = 'note'
+                    AND CAST(f.ref AS INTEGER) = n.id
+
+                WHERE search_fts MATCH ?
+
+                ORDER BY score ASC
+                LIMIT ?
+            """, (
+                safe_query,
+                max(limit * 4, limit)
+            )).fetchall()
+
+            results = []
+
+            for row in rows:
+                item = dict(row)
+
+                if exclude_session_id:
+                    if item["message_session_id"] == exclude_session_id:
+                        continue
+
+                    if item["note_session_id"] == exclude_session_id:
+                        continue
+
+                results.append({
+                    "text": item["text"],
+                    "source": item["source"],
+                    "ref": item["ref"],
+                    "score": item["score"]
+                })
+
+                if len(results) >= limit:
+                    break
+
+            return results
+
+
+        
     def get_session_summary(self, session_id):
         with self.connection() as db:
             row = db.execute("""
