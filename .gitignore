@@ -57,3 +57,11 @@ models/
 history.txt
 
 data/sessions
+
+
+# Local CJ7 database and persistent user memory
+data/cj7.db
+data/cj7.db-journal
+data/cj7.db-wal
+data/cj7.db-shm
+data/memory/
