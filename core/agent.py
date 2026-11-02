@@ -477,9 +477,11 @@ Do not expose private chain-of-thought.
                 # The next model response may recover, ask the user,
                 # or provide an honest explanation.
                 continue
-
+            
             # Execute the batch in order and persist each result.
-            for tool_call in tool_calls:
+            cycle_diagnostic = None
+
+            for index, tool_call in enumerate(tool_calls):
                 tool_name = self.get_tool_name(tool_call)
                 arguments = self.get_tool_arguments(tool_call)
 
@@ -496,11 +498,16 @@ Do not expose private chain-of-thought.
                         success=result.get("success", False)
                     )
 
-                guard.record_outcome(
+                cycle_diagnostic = guard.record_outcome(
                     tool_name,
                     arguments,
                     result,
                 )
+
+                if cycle_diagnostic:
+                    # Preserve the real tool result while informing
+                    # the model why execution is being interrupted.
+                    result["guard_warning"] = cycle_diagnostic
 
                 self.append_tool_result(
                     messages,
@@ -508,3 +515,38 @@ Do not expose private chain-of-thought.
                     result,
                     on_update,
                 )
+
+                if cycle_diagnostic:
+                    # Do not execute the remainder of a batch after
+                    # detecting a repeating sequence.
+                    for skipped_call in tool_calls[index + 1:]:
+                        skipped_name = self.get_tool_name(skipped_call)
+
+                        self.append_tool_result(
+                            messages,
+                            skipped_name,
+                            {
+                                "success": False,
+                                "output": None,
+                                "error": (
+                                    "Skipped because a repeating "
+                                    "tool-call sequence was detected."
+                                ),
+                            },
+                            on_update,
+                        )
+
+                    break
+
+            if cycle_diagnostic:
+                if recovery_used:
+                    self.progress.finish()
+                    return (
+                        "I stopped this request because a repeating "
+                        "tool-call sequence continued after a recovery "
+                        "attempt. No further calls in that sequence "
+                        "were executed."
+                    )
+
+                recovery_used = True
+                continue

@@ -8,6 +8,80 @@ class ExecutionGuardTests(unittest.TestCase):
     def setUp(self):
         self.guard = ExecutionGuard()
 
+    
+    def test_repeating_two_call_cycle_is_detected(self):
+        calls = [
+            ("readfile", {"path": "a.txt"}, {"success": False, "error": "A"}),
+            ("search", {"query": "something"}, {"success": False, "error": "B"}),
+        ]
+
+        diagnostic = None
+        for _ in range(3):
+            for name, args, result in calls:
+                diagnostic = self.guard.record_outcome(
+                    name, args, result
+                )
+
+        self.assertIsNotNone(diagnostic)
+        self.assertIn("Repeating tool-cycle guard", diagnostic)
+
+    def test_different_outcome_breaks_cycle(self):
+        calls = [
+            ("readfile", {"path": "a.txt"}, {"success": False, "error": "A"}),
+            ("search", {"query": "something"}, {"success": False, "error": "B"}),
+        ]
+
+        for _ in range(2):
+            for name, args, result in calls:
+                self.guard.record_outcome(name, args, result)
+
+        # Change one outcome before the third repetition.
+        self.guard.record_outcome(
+            "readfile",
+            {"path": "a.txt"},
+            {"success": True, "output": "Changed"},
+        )
+        self.guard.record_outcome(
+            "search",
+            {"query": "something"},
+            {"success": False, "error": "B"},
+        )
+
+        self.assertFalse(self.guard._cycle_reported)
+
+    def test_three_call_cycle_is_detected(self):
+        calls = [
+            ("readfile", {"path": "a.txt"}, {"success": True, "output": "A"}),
+            ("search", {"query": "x"}, {"success": True, "output": "B"}),
+            ("open", {"path": "page"}, {"success": False, "error": "C"}),
+        ]
+
+        diagnostic = None
+        for _ in range(3):
+            for name, args, result in calls:
+                diagnostic = self.guard.record_outcome(
+                    name, args, result
+                )
+
+        self.assertIsNotNone(diagnostic)
+        self.assertIn("Repeating tool-cycle guard", diagnostic)
+
+    def test_reset_clears_cycle_history(self):
+        calls = [
+            ("readfile", {"path": "a.txt"}, {"success": False, "error": "A"}),
+            ("search", {"query": "x"}, {"success": False, "error": "B"}),
+        ]
+
+        for _ in range(3):
+            for name, args, result in calls:
+                self.guard.record_outcome(name, args, result)
+
+        self.guard.reset()
+
+        self.assertFalse(self.guard._cycle_reported)
+        self.assertEqual(len(self.guard._history), 0)
+
+
     def test_different_outcomes_do_not_trigger_block(self):
         args = {"path": "notes.txt"}
 
