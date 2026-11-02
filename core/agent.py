@@ -247,176 +247,175 @@ class Agent:
             """
 
 
-        max_steps = 10
+        
 
-        for step in range(max_steps):
 
-            llm_messages = context_manager.prepare_messages(
-                transcript=messages,
-                system_prompt=system_prompt,
-                tools=self.tools,
-                session_id=session_id
+        llm_messages = context_manager.prepare_messages(
+            transcript=messages,
+            system_prompt=system_prompt,
+            tools=self.tools,
+            session_id=session_id
+        )
+
+        stream = self.think_stream(llm_messages)
+
+        thinking_started = False
+        answer_started = False
+
+        full_content = ""
+        tool_calls = []
+
+        # --------------------------------
+        # STREAM MODEL RESPONSE
+        # --------------------------------
+
+        for chunk in stream:
+
+            message = chunk.message
+
+            thinking = getattr(message, "thinking", None)
+
+            if thinking:
+
+                if not thinking_started:
+                    print("\n[THINKING]\n")
+                    thinking_started = True
+
+                print(
+                    thinking,
+                    end="",
+                    flush=True
+                )
+
+            content = getattr(message, "content", None)
+
+            if content:
+
+                if not answer_started:
+
+                    if thinking_started:
+                        print("\n")
+
+                    print("[ANSWER]\n")
+                    answer_started = True
+
+                print(
+                    content,
+                    end="",
+                    flush=True
+                )
+
+                full_content += content
+
+            chunk_tool_calls = getattr(
+                message,
+                "tool_calls",
+                None
             )
 
-            stream = self.think_stream(llm_messages)
+            if chunk_tool_calls:
+                tool_calls.extend(chunk_tool_calls)
 
-            thinking_started = False
-            answer_started = False
+        print("\n")
 
-            full_content = ""
-            tool_calls = []
+        # --------------------------------
+        # BUILD ASSISTANT MESSAGE
+        # --------------------------------
 
-            # --------------------------------
-            # STREAM MODEL RESPONSE
-            # --------------------------------
+        assistant_message = {
+            "role": "assistant",
+            "content": full_content,
+        }
 
-            for chunk in stream:
+        if tool_calls:
 
-                message = chunk.message
+            serialized_tool_calls = [
+                {
+                    "function": {
+                        "name": tool_call.function.name,
+                        "arguments": tool_call.function.arguments
+                    }
+                }
+                for tool_call in tool_calls
+            ]
 
-                thinking = getattr(message, "thinking", None)
+            assistant_message["tool_calls"] = serialized_tool_calls
 
-                if thinking:
-
-                    if not thinking_started:
-                        print("\n[THINKING]\n")
-                        thinking_started = True
-
-                    print(
-                        thinking,
-                        end="",
-                        flush=True
-                    )
-
-                content = getattr(message, "content", None)
-
-                if content:
-
-                    if not answer_started:
-
-                        if thinking_started:
-                            print("\n")
-
-                        print("[ANSWER]\n")
-                        answer_started = True
-
-                    print(
-                        content,
-                        end="",
-                        flush=True
-                    )
-
-                    full_content += content
-
-                chunk_tool_calls = getattr(
-                    message,
-                    "tool_calls",
-                    None
-                )
-
-                if chunk_tool_calls:
-                    tool_calls.extend(chunk_tool_calls)
-
-            print("\n")
-
-            # --------------------------------
-            # BUILD ASSISTANT MESSAGE
-            # --------------------------------
-
-            assistant_message = {
-                "role": "assistant",
-                "content": full_content,
-            }
-
-            if tool_calls:
-
-                serialized_tool_calls = [
-                    {
-                        "function": {
-                            "name": tool_call.function.name,
-                            "arguments": tool_call.function.arguments
+            messages.append(
+                Message(
+                    role="assistant",
+                    content=full_content,
+                    metadata={
+                        "tool_calls": serialized_tool_calls,
+                        "provenance": {
+                            "source_type": "assistant",
+                            "source_ref": "model_tool_call"
                         }
                     }
-                    for tool_call in tool_calls
-                ]
+                )
+            )
 
-                assistant_message["tool_calls"] = serialized_tool_calls
+            # Save the tool-call request immediately.
+            self.persist_transcript(on_update)
 
-                messages.append(
-                    Message(
-                        role="assistant",
-                        content=full_content,
-                        metadata={
-                            "tool_calls": serialized_tool_calls,
-                            "provenance": {
-                                "source_type": "assistant",
-                                "source_ref": "model_tool_call"
-                            }
+        llm_messages.append(assistant_message)
+
+        # --------------------------------
+        # FINAL RESPONSE
+        # --------------------------------
+
+        if not tool_calls:
+
+            self.progress.finish()
+            speak(full_content)
+
+            return full_content
+
+        # --------------------------------
+        # TOOL EXECUTION
+        # --------------------------------
+
+        for tool_call in tool_calls:
+
+            tool_name = tool_call.function.name
+
+            if tool_name == "create_plan":
+                result = self.execute_tool(tool_call)
+
+            else:
+                self.progress.start_step()
+                result = self.execute_tool(tool_call)
+
+            tool_content = json.dumps(
+                result,
+                ensure_ascii=False,
+                default=str
+            )
+
+            # Add tool result to model context.
+            llm_messages.append({
+                "role": "tool",
+                "tool_name": tool_name,
+                "content": tool_content
+            })
+
+            # Preserve tool result in transcript.
+            messages.append(
+                Message(
+                    role="tool",
+                    content=tool_content,
+                    metadata={
+                        "tool_name": tool_name,
+                        "provenance": {
+                            "source_type": "tool",
+                            "source_ref": tool_name
                         }
-                    )
+                    }
                 )
+            )
 
-                # Save the tool-call request immediately.
-                self.persist_transcript(on_update)
-
-            llm_messages.append(assistant_message)
-
-            # --------------------------------
-            # FINAL RESPONSE
-            # --------------------------------
-
-            if not tool_calls:
-
-                self.progress.finish()
-                speak(full_content)
-
-                return full_content
-
-            # --------------------------------
-            # TOOL EXECUTION
-            # --------------------------------
-
-            for tool_call in tool_calls:
-
-                tool_name = tool_call.function.name
-
-                if tool_name == "create_plan":
-                    result = self.execute_tool(tool_call)
-
-                else:
-                    self.progress.start_step()
-                    result = self.execute_tool(tool_call)
-
-                tool_content = json.dumps(
-                    result,
-                    ensure_ascii=False,
-                    default=str
-                )
-
-                # Add tool result to model context.
-                llm_messages.append({
-                    "role": "tool",
-                    "tool_name": tool_name,
-                    "content": tool_content
-                })
-
-                # Preserve tool result in transcript.
-                messages.append(
-                    Message(
-                        role="tool",
-                        content=tool_content,
-                        metadata={
-                            "tool_name": tool_name,
-                            "provenance": {
-                                "source_type": "tool",
-                                "source_ref": tool_name
-                            }
-                        }
-                    )
-                )
-
-                # Save each tool result immediately.
-                self.persist_transcript(on_update)
+            # Save each tool result immediately.
+            self.persist_transcript(on_update)
 
         self.progress.finish()
 

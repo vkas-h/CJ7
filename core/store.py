@@ -728,6 +728,38 @@ class Store:
 
             return row["summary"] if row else ""
 
+
+    def delete_all_sessions(self):
+        """
+        Delete every session and its transcript.
+
+        Preserve SQLite notes and their FTS entries.
+        Preserve persistent Markdown memory files.
+        """
+        with self.connection() as db:
+            count = db.execute(
+                "SELECT COUNT(*) FROM sessions"
+            ).fetchone()[0]
+
+            # Remove only message entries from the FTS index.
+            db.execute("""
+                DELETE FROM search_fts
+                WHERE source = 'message'
+                AND ref IN (
+                    SELECT CAST(id AS TEXT)
+                    FROM messages
+                    WHERE session_id IN (
+                        SELECT id FROM sessions
+                    )
+                )
+            """)
+
+            # Messages are deleted through ON DELETE CASCADE.
+            # Notes survive through ON DELETE SET NULL.
+            db.execute("DELETE FROM sessions")
+
+            return count
+
 # --------------------------------------------------
 # SHARED STORE INSTANCE
 # --------------------------------------------------
