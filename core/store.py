@@ -438,31 +438,70 @@ class Store:
                     "Summary boundary cannot move backwards."
                 )
 
-            # Reject a boundary that cuts an assistant tool-call batch.
+
+            # A summary boundary must never split an assistant tool batch.
+            # Each assistant tool-call message must be followed by the
+            # same number of contiguous tool-result messages.
             rows = db.execute("""
                 SELECT position, role, tool_calls_json
                 FROM messages
                 WHERE session_id = ?
-                  AND position <= ?
-                ORDER BY position DESC
-            """, (session_id, summarized_upto)).fetchall()
+                ORDER BY position ASC
+            """, (session_id,)).fetchall()
 
-            boundary_row = next(
-                (row for row in rows
-                 if row["position"] == summarized_upto),
-                None
+            boundary_exists = any(
+                row["position"] == summarized_upto
+                for row in rows
             )
 
-            if boundary_row is None:
+            if not boundary_exists:
                 raise ValueError("Summary boundary does not exist.")
 
-            if (
-                boundary_row["role"] == "assistant"
-                and boundary_row["tool_calls_json"]
-            ):
-                raise ValueError(
-                    "Summary boundary splits a tool exchange."
-                )
+            for index, row in enumerate(rows):
+                if row["position"] > summarized_upto:
+                    break
+
+                if row["role"] != "assistant" or not row["tool_calls_json"]:
+                    continue
+
+                try:
+                    tool_calls = json.loads(row["tool_calls_json"])
+                except (TypeError, json.JSONDecodeError) as error:
+                    raise ValueError(
+                        "Invalid tool-call data in transcript."
+                    ) from error
+
+                if not isinstance(tool_calls, list) or not tool_calls:
+                    raise ValueError(
+                        "Invalid assistant tool-call batch."
+                    )
+
+                result_count = len(tool_calls)
+                batch_end_index = index + result_count
+
+                if batch_end_index >= len(rows):
+                    raise ValueError(
+                        "Cannot summarize an incomplete tool exchange."
+                    )
+
+                result_rows = rows[index + 1:batch_end_index + 1]
+
+                if len(result_rows) != result_count:
+                    raise ValueError(
+                        "Incomplete tool-result batch."
+                    )
+
+                if any(result["role"] != "tool" for result in result_rows):
+                    raise ValueError(
+                        "Tool results must be contiguous after tool calls."
+                    )
+
+                batch_end_position = result_rows[-1]["position"]
+
+                if row["position"] <= summarized_upto < batch_end_position:
+                    raise ValueError(
+                        "Summary boundary splits a tool exchange."
+                    )
 
             # Both fields are committed in one SQLite transaction.
             db.execute("""

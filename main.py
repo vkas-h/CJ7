@@ -16,6 +16,7 @@ from core.agent import Agent
 from services.wakeword import WakeWord
 from core.input_manager import InputManager
 from core.tool_context import ToolContext
+from core.memory import extract_and_save_memory
 
 
 show_banner()
@@ -170,6 +171,31 @@ while True:
     )
 
     session.save()
+
+    # Flush newly completed conversation messages into persistent memory.
+    # The checkpoint is stored in sessions.context_json.
+    
+    last_flushed = int( session.context.get("memory_flushed_upto", -1))
+
+    latest_position = len(session.transcript) - 1
+
+    if latest_position > last_flushed:
+        new_messages = session.transcript[last_flushed + 1:]
+
+        try:
+            extract_and_save_memory(
+                transcript=new_messages,
+                session_id=session.id,
+                message_position=latest_position
+            )
+
+            # Advance only after extraction and file writes succeed.
+            session.context["memory_flushed_upto"] = latest_position
+            session.save()
+
+        except Exception as error:
+            # Leave the checkpoint unchanged so the next turn can retry.
+            logger.error(f"[MEMORY] Memory flush failed: {error}")
 
     if input_type == "keyboard":
         input_manager.resume_normal_mode()

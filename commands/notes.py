@@ -1,74 +1,118 @@
+from pathlib import Path
+
 from core.command import Command
+from core.store import store
 from config.settings import config
 
-notes_file = config["notes_file"]
+
+LEGACY_NOTES_FILE = Path(config["notes_file"])
+
+
+def migrate_legacy_notes():
+    """
+    Import notes.txt into SQLite once.
+
+    The source_ref marker makes migration idempotent. The original
+    text file is deliberately retained as a backup.
+    """
+    if not LEGACY_NOTES_FILE.exists():
+        return 0
+
+    existing = store.list_notes(limit=100000)
+
+    migrated_lines = {
+        note["text"]
+        for note in existing
+        if note.get("source_ref") == "legacy_notes.txt"
+    }
+
+    imported = 0
+
+    with LEGACY_NOTES_FILE.open("r", encoding="utf-8") as file:
+        for line in file:
+            note_text = line.strip()
+
+            if not note_text or note_text in migrated_lines:
+                continue
+
+            store.add_note(
+                text=note_text,
+                source_type="legacy",
+                source_ref="legacy_notes.txt"
+            )
+
+            migrated_lines.add(note_text)
+            imported += 1
+
+    return imported
 
 
 def notes(action, note=None, query=None):
-    """Add, list, or search saved notes."""
+    """Add, list, or search SQLite-backed notes."""
 
     action = action.strip().lower()
 
-    if action == "add":
-        if not note or not note.strip():
-            return "Write something to save."
+    try:
+        migrated = migrate_legacy_notes()
 
-        try:
-            with open(notes_file, "a", encoding="utf-8") as file:
-                file.write(note.strip() + "\n")
+        if action == "add":
+            if not note or not note.strip():
+                return "Write something to save."
 
-            return "Note saved."
+            store.add_note(
+                text=note.strip(),
+                source_type="user"
+            )
 
-        except OSError as e:
-            return f"Error saving note: {e}"
+            return "Note saved to SQLite."
 
-    if action in {"list", "search"}:
-        try:
-            with open(notes_file, "r", encoding="utf-8") as file:
-                saved_notes = [
-                    line.strip()
-                    for line in file
-                    if line.strip()
-                ]
+        if action == "list":
+            saved_notes = store.list_notes(limit=100)
 
-        except FileNotFoundError:
-            saved_notes = []
+            if not saved_notes:
+                return "No notes yet."
 
-        except OSError as e:
-            return f"Error reading notes: {e}"
+            lines = ["------ Saved Notes ------"]
+
+            for index, item in enumerate(saved_notes, start=1):
+                lines.append(f"{index}. {item['text']}")
+
+            if migrated:
+                lines.append(
+                    f"\nImported {migrated} legacy note(s) from notes.txt."
+                )
+
+            return "\n".join(lines)
 
         if action == "search":
             if not query or not query.strip():
                 return "Provide a search query."
 
-            search_query = query.strip().casefold()
-            saved_notes = [
-                item for item in saved_notes
-                if search_query in item.casefold()
+            results = store.search(query.strip(), limit=20)
+
+            # Only show notes, not historical conversation messages.
+            results = [
+                item for item in results
+                if item["source"] == "note"
             ]
 
-            if not saved_notes:
+            if not results:
                 return f"No notes found matching: {query}"
 
-            heading = f"Notes matching '{query}'"
+            lines = [f"------ Notes matching '{query}' ------"]
 
-        else:
-            if not saved_notes:
-                return "No notes yet."
+            for index, item in enumerate(results, start=1):
+                lines.append(f"{index}. {item['text']}")
 
-            heading = "Saved Notes"
+            return "\n".join(lines)
 
-        lines = [f"------ {heading} ------"]
-        lines.extend(
-            f"{index}. {item}"
-            for index, item in enumerate(saved_notes, start=1)
+        return (
+            f"Unknown notes action: {action}. "
+            "Use add, list, or search."
         )
-        return "\n".join(lines)
 
-    return (
-        f"Unknown notes action: {action}. "
-        "Use add, list, or search."
-    )
+    except Exception as error:
+        return f"Notes error: {error}"
 
 
 COMMANDS = [
@@ -77,8 +121,8 @@ COMMANDS = [
         function=notes,
         description=(
             "Manage saved notes. Use action='add' to save a note, "
-            "action='list' to show all notes, or action='search' "
-            "to find notes containing a phrase."
+            "action='list' to show saved notes, or action='search' "
+            "to search notes."
         ),
         toolset="memory",
         parameters={
@@ -95,10 +139,11 @@ COMMANDS = [
                 },
                 "query": {
                     "type": "string",
-                    "description": "Phrase to find when action is search."
+                    "description": "Search query when action is search."
                 }
             },
-            "required": ["action"]
+            "required": ["action"],
+            "additionalProperties": False
         }
     )
 ]

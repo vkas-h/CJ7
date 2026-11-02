@@ -5,8 +5,7 @@ from pathlib import Path
 from config.settings import config
 from core.store import store
 from services.llm import generate_with_model
-from core.memory import read_life_memory, extract_and_save_memory
-
+from core.memory import read_life_memory
 
 LLM_CONFIG = config["llm"]
 
@@ -195,34 +194,50 @@ class ContextManager:
     # --------------------------------------------------
 
     def find_safe_start(self, transcript, summarized_upto):
-        if summarized_upto < 0:
-            return 0
-
+        """
+        Return a start index that never begins inside a tool exchange.
+        summarized_upto is an inclusive transcript index.
+        """
         start = min(len(transcript), summarized_upto + 1)
 
-        if start >= len(transcript):
-            return len(transcript)
+        if start <= 0 or start >= len(transcript):
+            return start
 
-        boundary_message = transcript[start - 1]
+        # Walk backwards to find whether the proposed start is inside
+        # the result messages belonging to an assistant tool-call batch.
+        for index in range(start - 1, -1, -1):
+            message = transcript[index]
 
-        if (
-            boundary_message.role == "assistant"
-            and self.get_message_tool_calls(boundary_message)
-        ):
-            return start - 1
+            if message.role == "user":
+                break
 
-        if boundary_message.role == "tool":
-            for index in range(start - 2, -1, -1):
-                message = transcript[index]
+            if message.role != "assistant":
+                continue
+
+            calls = self.get_message_tool_calls(message)
+
+            if not calls:
+                continue
+
+            result_count = len(calls)
+            result_start = index + 1
+            result_end = result_start + result_count
+
+            # If this batch reaches the proposed start, rewind to its
+            # assistant message. Do not split its results.
+            if result_start < start <= result_end:
+                batch = transcript[result_start:result_end]
 
                 if (
-                    message.role == "assistant"
-                    and self.get_message_tool_calls(message)
+                    len(batch) == result_count
+                    and all(item.role == "tool" for item in batch)
                 ):
                     return index
 
-                if message.role == "user":
-                    break
+                # Malformed/incomplete batch: do not start after it.
+                return index
+
+            break
 
         return start
 
@@ -538,17 +553,6 @@ Rules:
             new_summary,
             boundary
         )
-
-        # Memory extraction is separate from summary persistence.
-        # Failure here must not invalidate the already saved summary.
-        try:
-            extract_and_save_memory(
-                transcript=transcript[:boundary + 1],
-                session_id=session_id,
-                message_position=boundary
-            )
-        except Exception as error:
-            print(f"[MEMORY] Memory flush failed: {error}")
 
         print(
             f"[CONTEXT] Compacted transcript through position {boundary}."
