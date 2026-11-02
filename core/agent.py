@@ -1,5 +1,6 @@
 
 import json
+
 from core.context import context_manager
 from utils.plugin_loader import load_plugins
 from core.tool import commands_to_tools
@@ -11,6 +12,7 @@ from core.progress import Progress
 from core.planner import PLAN_TOOL
 from core.reasoning import ReasoningRouter
 from core.message import Message
+from core.execution_guard import ExecutionGuard
 from services.tts import speak
 
 
@@ -18,7 +20,6 @@ MAX_TOOL_RESULT_CHARS = 2000
 
 
 class Agent:
-
     def __init__(self, commands=None, tool_context=None):
         self.commands = (
             commands if commands is not None else load_plugins()
@@ -32,51 +33,10 @@ class Agent:
         self.tool_context = tool_context
 
     # --------------------------------------------------
-    # TOOL DESCRIPTIONS
-    # --------------------------------------------------
-
-    def describe_tool(self, tool_call):
-        tool_name = tool_call.function.name
-
-        descriptions = {
-            "search": "Searching files",
-            "readfile": "Reading a file",
-            "openfile": "Opening a file",
-            "createfile": "Creating a file",
-            "editfile": "Editing a file",
-            "createfolder": "Creating a folder",
-            "list_directory": "Listing directory contents",
-            "delete": "Deleting a file",
-            "search_content": "Searching file contents",
-
-            "open": "Opening an application",
-
-            "remind": "Managing reminders",
-            "jobs": "Managing scheduled jobs",
-            "cancel": "Cancelling a scheduled job",
-
-            "notes": "Managing notes",
-            "session": "Managing sessions",
-            "history": "Searching conversation history",
-
-            "time": "Checking the time",
-
-            "volume": "Controlling volume",
-            "brightness": "Controlling brightness",
-            "power": "Managing power actions",
-        }
-
-        return descriptions.get(
-            tool_name,
-            f"Running {tool_name}"
-        )
-
-    # --------------------------------------------------
     # REASONING
     # --------------------------------------------------
 
     def think_stream(self, messages):
-
         policy = self.reasoning_router.decide(messages)
 
         print(f"[REASONING] {policy.level.value}")
@@ -85,19 +45,15 @@ class Agent:
             messages=messages,
             tools=self.tools,
             reasoning=policy.think,
-            effort=policy.effort
+            effort=policy.effort,
         )
 
     # --------------------------------------------------
     # PERSISTENCE
     # --------------------------------------------------
 
-    def persist_transcript(self, callback):
-        """
-        Persist the current transcript when a callback is provided.
-        Persistence errors are deliberately not swallowed.
-        """
-
+    @staticmethod
+    def persist_transcript(callback):
         if callback is not None:
             callback()
 
@@ -109,59 +65,96 @@ class Agent:
         print(f"[HOOK] Starting tool: {tool_name}")
 
     def after_tool_execution(self, tool_name, result):
-        status = "SUCCESS" if result.success else "FAILED"
+        status = "SUCCESS" if result.get("success") else "FAILED"
         print(f"[HOOK] Tool {tool_name}: {status}")
 
     # --------------------------------------------------
     # RESULT LIMITING
     # --------------------------------------------------
 
-    def limit_result_text(self, text):
+    @staticmethod
+    def limit_result_text(value):
+        if not isinstance(value, str):
+            return value
 
-        if not isinstance(text, str):
-            return text
+        if len(value) <= MAX_TOOL_RESULT_CHARS:
+            return value
 
-        if len(text) <= MAX_TOOL_RESULT_CHARS:
-            return text
-
-        omitted = len(text) - MAX_TOOL_RESULT_CHARS
+        omitted = len(value) - MAX_TOOL_RESULT_CHARS
 
         return (
-            text[:MAX_TOOL_RESULT_CHARS]
+            value[:MAX_TOOL_RESULT_CHARS]
             + f"\n\n[OUTPUT TRUNCATED: {omitted} characters omitted]"
         )
+
+    # --------------------------------------------------
+    # TOOL CALL NORMALIZATION
+    # --------------------------------------------------
+
+    @staticmethod
+    def get_tool_name(tool_call):
+        return tool_call.function.name
+
+    @staticmethod
+    def get_tool_arguments(tool_call):
+        arguments = getattr(tool_call.function, "arguments", {})
+
+        if isinstance(arguments, str):
+            arguments = json.loads(arguments)
+
+        if not isinstance(arguments, dict):
+            raise TypeError("Tool arguments must be a JSON object.")
+
+        return arguments
+
+    @staticmethod
+    def serialize_tool_calls(tool_calls):
+        serialized = []
+
+        for tool_call in tool_calls:
+            serialized.append({
+                "function": {
+                    "name": Agent.get_tool_name(tool_call),
+                    "arguments": Agent.get_tool_arguments(tool_call),
+                }
+            })
+
+        return serialized
 
     # --------------------------------------------------
     # TOOL EXECUTION
     # --------------------------------------------------
 
-    def execute_tool(self, tool_call):
-
-        tool_name = tool_call.function.name
-        arguments = tool_call.function.arguments
-
+    def execute_tool(self, tool_name, arguments):
         if tool_name == "create_plan":
-            steps = arguments.get("steps", [])
+            try:
+                self.progress.create_plan(arguments.get("steps", []))
 
-            self.progress.create_plan(steps)
-
-            return {
-                "success": True,
-                "output": "Plan created successfully."
-            }
+                return {
+                    "success": True,
+                    "output": "Plan created successfully.",
+                    "error": None,
+                }
+            except Exception as error:
+                return {
+                    "success": False,
+                    "output": None,
+                    "error": f"Invalid plan: {error}",
+                }
 
         command = self.commands.get(tool_name)
 
         if command is None:
             return {
                 "success": False,
-                "error": f"Unknown tool: {tool_name}"
+                "output": None,
+                "error": f"Unknown tool: {tool_name}",
             }
 
         if not request_permission(
             command,
             arguments,
-            self.tool_context
+            self.tool_context,
         ):
             return {
                 "success": False,
@@ -181,82 +174,72 @@ class Agent:
         result.output = self.limit_result_text(result.output)
         result.error = self.limit_result_text(result.error)
 
-        self.after_tool_execution(tool_name, result)
+        output = result.to_dict()
+        self.after_tool_execution(tool_name, output)
 
-        return result.to_dict()
+        return output
 
     # --------------------------------------------------
-    # MAIN AGENT LOOP
+    # TRANSCRIPT HELPERS
     # --------------------------------------------------
 
-    def run(self, messages, on_update=None, session_id=None):
-
-        system_prompt = """
-            You are CJ7, a desktop AI assistant.
-
-            You have access to normal tools and an internal tool called
-            create_plan.
-
-            Rules:
-
-            1. For simple conversational questions:
-            - Answer directly.
-            - Do not create a plan.
-            - Do not use tools unless necessary.
-
-            2. For a task requiring only one simple action:
-            - Use the required tool directly.
-            - Do not create a plan.
-
-            3. For a task requiring multiple meaningful steps:
-            - FIRST call create_plan.
-            - Give 2 to 5 concise meaningful task phases.
-            - Then perform the required tools.
-
-            The plan should describe the user's task, not raw tool calls.
-
-            Example:
-
-            User:
-            "Read agent.py, inspect progress.py, and explain how they work together."
-
-            Good plan:
-
-            create_plan(
-                steps=[
-                    {
-                        "type": "tool",
-                        "description": "Read core/agent.py"
-                    },
-                    {
-                        "type": "tool",
-                        "description": "Read core/progress.py"
-                    },
-                    {
-                        "type": "analysis",
-                        "description": "Analyze how Agent and Progress interact"
-                    },
-                    {
-                        "type": "response",
-                        "description": "Explain the integration"
-                    }
-                ]
-            )
-
-            Do not expose chain-of-thought or internal reasoning.
-            """
-
-
-        
-
-
-        llm_messages = context_manager.prepare_messages(
-            transcript=messages,
-            system_prompt=system_prompt,
-            tools=self.tools,
-            session_id=session_id
+    def append_tool_result(
+        self,
+        messages,
+        tool_name,
+        result,
+        on_update,
+    ):
+        content = json.dumps(
+            result,
+            ensure_ascii=False,
+            default=str,
         )
 
+        messages.append(
+            Message(
+                role="tool",
+                content=content,
+                metadata={
+                    "tool_name": tool_name,
+                    "provenance": {
+                        "source_type": "tool",
+                        "source_ref": tool_name,
+                    },
+                },
+            )
+        )
+
+        self.persist_transcript(on_update)
+
+    def append_assistant_tool_request(
+        self,
+        messages,
+        content,
+        serialized_tool_calls,
+        on_update,
+    ):
+        messages.append(
+            Message(
+                role="assistant",
+                content=content or "",
+                metadata={
+                    "tool_calls": serialized_tool_calls,
+                    "provenance": {
+                        "source_type": "assistant",
+                        "source_ref": "model_tool_call",
+                    },
+                },
+            )
+        )
+
+        self.persist_transcript(on_update)
+
+    # --------------------------------------------------
+    # MODEL STREAMING
+    # --------------------------------------------------
+
+    def collect_model_response(self, llm_messages):
         stream = self.think_stream(llm_messages)
 
         thinking_started = False
@@ -265,52 +248,35 @@ class Agent:
         full_content = ""
         tool_calls = []
 
-        # --------------------------------
-        # STREAM MODEL RESPONSE
-        # --------------------------------
-
         for chunk in stream:
-
             message = chunk.message
 
             thinking = getattr(message, "thinking", None)
 
             if thinking:
-
                 if not thinking_started:
                     print("\n[THINKING]\n")
                     thinking_started = True
 
-                print(
-                    thinking,
-                    end="",
-                    flush=True
-                )
+                print(thinking, end="", flush=True)
 
             content = getattr(message, "content", None)
 
             if content:
-
                 if not answer_started:
-
                     if thinking_started:
                         print("\n")
 
                     print("[ANSWER]\n")
                     answer_started = True
 
-                print(
-                    content,
-                    end="",
-                    flush=True
-                )
-
+                print(content, end="", flush=True)
                 full_content += content
 
             chunk_tool_calls = getattr(
                 message,
                 "tool_calls",
-                None
+                None,
             )
 
             if chunk_tool_calls:
@@ -318,105 +284,227 @@ class Agent:
 
         print("\n")
 
-        # --------------------------------
-        # BUILD ASSISTANT MESSAGE
-        # --------------------------------
+        return full_content, tool_calls
 
-        assistant_message = {
-            "role": "assistant",
-            "content": full_content,
-        }
+    # --------------------------------------------------
+    # MAIN AGENT LOOP
+    # --------------------------------------------------
 
-        if tool_calls:
-
-            serialized_tool_calls = [
-                {
-                    "function": {
-                        "name": tool_call.function.name,
-                        "arguments": tool_call.function.arguments
-                    }
-                }
-                for tool_call in tool_calls
-            ]
-
-            assistant_message["tool_calls"] = serialized_tool_calls
-
-            messages.append(
-                Message(
-                    role="assistant",
-                    content=full_content,
-                    metadata={
-                        "tool_calls": serialized_tool_calls,
-                        "provenance": {
-                            "source_type": "assistant",
-                            "source_ref": "model_tool_call"
-                        }
-                    }
-                )
-            )
-
-            # Save the tool-call request immediately.
-            self.persist_transcript(on_update)
-
-        llm_messages.append(assistant_message)
-
-        # --------------------------------
-        # FINAL RESPONSE
-        # --------------------------------
-
-        if not tool_calls:
-
-            self.progress.finish()
-            speak(full_content)
-
-            return full_content
-
-        # --------------------------------
-        # TOOL EXECUTION
-        # --------------------------------
-
-        for tool_call in tool_calls:
-
-            tool_name = tool_call.function.name
-
-            if tool_name == "create_plan":
-                result = self.execute_tool(tool_call)
-
-            else:
-                self.progress.start_step()
-                result = self.execute_tool(tool_call)
-
-            tool_content = json.dumps(
-                result,
-                ensure_ascii=False,
-                default=str
-            )
-
-            # Add tool result to model context.
-            llm_messages.append({
-                "role": "tool",
-                "tool_name": tool_name,
-                "content": tool_content
-            })
-
-            # Preserve tool result in transcript.
-            messages.append(
-                Message(
-                    role="tool",
-                    content=tool_content,
-                    metadata={
-                        "tool_name": tool_name,
-                        "provenance": {
-                            "source_type": "tool",
-                            "source_ref": tool_name
-                        }
-                    }
-                )
-            )
-
-            # Save each tool result immediately.
-            self.persist_transcript(on_update)
-
+    def run(self, messages, on_update=None, session_id=None):
         self.progress.finish()
 
-        return "I couldn't complete the request within the allowed tool steps."
+        guard = ExecutionGuard()
+        recovery_used = False
+
+        system_prompt = """
+You are CJ7, a desktop AI assistant.
+
+You can answer normally or use tools.
+
+Rules:
+
+1. Simple conversational questions:
+   - Answer directly.
+   - Do not create a plan.
+   - Do not use tools unless necessary.
+
+2. One simple action:
+   - Use the required tool directly.
+   - Do not create a plan.
+
+3. Multiple meaningful steps:
+   - First call create_plan.
+   - Create 2 to 5 concise phases.
+   - Then perform the work.
+   - Update your approach when a tool fails.
+
+4. Execution:
+   - Inspect tool results before deciding what to do next.
+   - Do not repeat a tool call with the same arguments when its
+     previous result has not changed.
+   - If an action fails, diagnose the failure and try a meaningfully
+     different approach when possible.
+   - Never claim an action succeeded unless its tool result confirms it.
+   - Do not claim a task is complete while required work remains.
+   - If the task cannot be completed, explain what failed and what
+     remains unfinished.
+
+5. Planning:
+   - A plan describes meaningful task phases, not every individual
+     tool call.
+   - Do not recreate the plan after every tool call.
+   - A plan is guidance, not permission to bypass tool permissions.
+
+6. Safety:
+   - Tool permissions are enforced by CJ7.
+   - Never attempt to bypass a denied action.
+   - Ask the user when required information or approval is missing.
+
+Do not expose private chain-of-thought.
+"""
+
+        while True:
+            # Rebuild the model context from the authoritative transcript.
+            # This also allows context compaction to take effect between
+            # model/tool cycles.
+            llm_messages = context_manager.prepare_messages(
+                transcript=messages,
+                system_prompt=system_prompt,
+                tools=self.tools,
+                session_id=session_id,
+            )
+
+            full_content, tool_calls = self.collect_model_response(
+                llm_messages
+            )
+
+            # No tool calls means the model has produced its final answer.
+            if not tool_calls:
+                self.progress.finish()
+
+                final_content = full_content.strip()
+
+                if final_content:
+                    speak(final_content)
+
+                return final_content or (
+                    "I could not produce a response for that request."
+                )
+
+            # Validate and serialize the complete batch before execution.
+            try:
+                serialized_tool_calls = self.serialize_tool_calls(
+                    tool_calls
+                )
+            except Exception as error:
+                return f"Invalid tool-call response: {error}"
+
+            self.append_assistant_tool_request(
+                messages=messages,
+                content=full_content,
+                serialized_tool_calls=serialized_tool_calls,
+                on_update=on_update,
+            )
+
+            # Preflight the whole batch. No tool in this batch runs if
+            # any call is a repeated action that the guard has blocked.
+            blocked_calls = []
+
+            for tool_call in tool_calls:
+                tool_name = self.get_tool_name(tool_call)
+                arguments = self.get_tool_arguments(tool_call)
+
+                diagnostic = guard.should_block(
+                    tool_name,
+                    arguments,
+                )
+
+                if diagnostic:
+                    blocked_calls.append({
+                        "tool_name": tool_name,
+                        "arguments": arguments,
+                        "diagnostic": diagnostic,
+                    })
+
+            if blocked_calls:
+                if recovery_used:
+                    terminal_message = (
+                        "I stopped this request because the same "
+                        "tool-call loop continued after a recovery "
+                        "attempt. No further repeated actions were run."
+                    )
+
+                    for tool_call in tool_calls:
+                        tool_name = self.get_tool_name(tool_call)
+                        arguments = self.get_tool_arguments(tool_call)
+
+                        diagnostic = guard.should_block(
+                            tool_name,
+                            arguments,
+                        )
+
+                        result = {
+                            "success": False,
+                            "output": None,
+                            "error": (
+                                diagnostic
+                                or "Skipped because another call in "
+                                   "the batch triggered loop protection."
+                            ),
+                        }
+
+                        self.append_tool_result(
+                            messages,
+                            tool_name,
+                            result,
+                            on_update,
+                        )
+
+                    self.progress.finish()
+                    return terminal_message
+
+                # One recovery opportunity per user request.
+                recovery_used = True
+
+                blocked_by_name = {
+                    item["tool_name"]: item["diagnostic"]
+                    for item in blocked_calls
+                }
+
+                for tool_call in tool_calls:
+                    tool_name = self.get_tool_name(tool_call)
+
+                    result = {
+                        "success": False,
+                        "output": None,
+                        "error": (
+                            blocked_by_name.get(tool_name)
+                            or (
+                                "This tool batch was not executed because "
+                                "another call triggered loop protection. "
+                                "Choose a different approach."
+                            )
+                        ),
+                    }
+
+                    self.append_tool_result(
+                        messages,
+                        tool_name,
+                        result,
+                        on_update,
+                    )
+
+                # The next model response may recover, ask the user,
+                # or provide an honest explanation.
+                continue
+
+            # Execute the batch in order and persist each result.
+            for tool_call in tool_calls:
+                tool_name = self.get_tool_name(tool_call)
+                arguments = self.get_tool_arguments(tool_call)
+
+                if tool_name != "create_plan":
+                    self.progress.start_tool_step(tool_name)
+
+                result = self.execute_tool(
+                    tool_name,
+                    arguments,
+                )
+
+                if tool_name != "create_plan":
+                    self.progress.complete_tool_step(
+                        success=result.get("success", False)
+                    )
+
+                guard.record_outcome(
+                    tool_name,
+                    arguments,
+                    result,
+                )
+
+                self.append_tool_result(
+                    messages,
+                    tool_name,
+                    result,
+                    on_update,
+                )

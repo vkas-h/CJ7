@@ -1,17 +1,21 @@
+
 PLAN_TOOL = {
     "type": "function",
     "function": {
         "name": "create_plan",
         "description": (
             "Create a short user-facing plan before starting a "
-            "multi-step task. Use this only when the user's request "
-            "requires multiple meaningful steps."
+            "multi-step task. Use only when multiple meaningful "
+            "steps are required. Do not use for simple questions "
+            "or a single action."
         ),
         "parameters": {
             "type": "object",
             "properties": {
                 "steps": {
                     "type": "array",
+                    "minItems": 2,
+                    "maxItems": 5,
                     "items": {
                         "type": "object",
                         "properties": {
@@ -24,21 +28,17 @@ PLAN_TOOL = {
                                 ]
                             },
                             "description": {
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                             }
                         },
-                        "required": [
-                            "type",
-                            "description"
-                        ]
-                    },
-                    "description": (
-                        "2 to 5 concise meaningful task phases. "
-                        "Each step must have a type and description."
-                    )
+                        "required": ["type", "description"],
+                        "additionalProperties": False
+                    }
                 }
             },
-            "required": ["steps"]
+            "required": ["steps"],
+            "additionalProperties": False
         }
     }
 }
