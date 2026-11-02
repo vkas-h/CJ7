@@ -123,7 +123,7 @@ while True:
     if user_resp is None:
         break
 
-    if input_type == "voice_timeout":
+    if input_type in ("voice_timeout", "voice_error", "wakeword"):
         continue
 
     words = user_resp.split()

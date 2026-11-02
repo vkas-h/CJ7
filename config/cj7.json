@@ -23,10 +23,30 @@
     "session_folder" : "data/sessions",
 
     "llm": {
-    "provider": "ollama",
-    "model": "beam:cloud",
-    "num_ctx": 32768
-}
+        "provider": "ollama",
+        "model": "beam:cloud",
+        "num_ctx": 32768
+    },
+
+    "wakeword": {
+        "model_path": "models/hey_cj7.onnx",
+        "threshold": 0.5,
+        "cooldown": 2.0,
+        "debug": true
+    },
+
+    "stt": {
+        "engine": "phonon",
+        "model": "phonon-2",
+        "hotwords": ["CJ7"],
+        "whisper_device": "cuda",
+        "whisper_compute_type": "int8_float16"
+    },
+
+    "tts": {
+        "device": "auto",
+        "model_path": "models/tts/en_US-lessac-medium.onnx"
+    }
 
 }
 

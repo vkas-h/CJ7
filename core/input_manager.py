@@ -157,6 +157,21 @@ class InputManager:
                 try:
                     text = stt.transcribe(audio_file)
 
+                except Exception as error:
+                    print(f"[VOICE] Transcription failed: {error}")
+
+                    self.voice_mode = False
+
+                    try:
+                        self.wakeword.start()
+                    except Exception as wake_error:
+                        print(f"[WAKE] Could not resume listener: {wake_error}")
+
+                    return (
+                        "voice_error",
+                        str(error),
+                    )
+
                 finally:
                     audio_file.unlink(missing_ok=True)
 
